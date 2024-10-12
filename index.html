@@ -3,12 +3,91 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>My CV</title>
-    <link rel="icon" type="image/png" href="resources/cv-icon.png">
-    
+    <title>Unity CV</title>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="left.css">
+    <link rel="stylesheet" href="right.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.7.1/jszip.min.js"></script>
 </head>
 <body>
-   <iframe src="resources/Unity CV professional.pdf" 
-   style="width: 100%; height: 800px;" frameborder="0"></iframe>
+    <div id="pages"></div>
+
+    <!-- <div class="page">
+        <object data="resources/cv.svg" type="image/svg+xml" id="svg-content"></object>
+    </div> -->
+
+    <div class="page">
+        <div id="left">
+            <img src="resources/profile-picture.jpg"Profile Picture" class="profile-pic">
+
+            <h2>Kiều Minh Hiếu</h2>
+            <div class="contact-info">
+                <h2 class="left-h1">Contact</h2>
+                <p>Email: hieuca205@gmail.com</p>
+                <p>Phone: 0963056220</p>
+                <p>Facebook: <a href="https://facebook.com/hieki.chan" target="_blank" style="color: white;">facebook.com/hieki.chan</a></p>
+                <p>GitHub: <a href="https://github.com/hieki-chan" target="_blank" style="color: white;">github.com/hieki-chan</a></p>
+            </div>
+
+            <div class="section">
+                <h2 class="left-h1">Education</h2>
+                <ul class="left-list">
+                    <li>Trường Đại Học Công Nghiệp Hà Nội (HaUI)</li>
+                    <li>GPA: 3.0/4.0</li>
+                </ul>
+            </div>
+
+            <div class="a">
+                <h3 class="left-h1">Skills</h3>
+                <ul class="left-list">
+                    <li>C# .Net Programming</li>
+                    <li>OOP, SOLID Principles</li>
+                    <li>Design Patterns</li>
+                    <li>Unity 3D</li>
+                    <li>Mobile Game Publishing</li>
+                    <li>Version Control: GitHub</li>
+                </ul>
+            </div>
+
+            <div class="languages">
+                <h2 class="left-h1">Languages</h2>
+                <ul class="left-list">
+                    <li>English: Elementary</li>
+                </ul>
+            </div>
+        </div>
+
+        <div id="right">
+            <div id="header">
+
+            </div>
+
+            <div>
+                <div class="section">
+                    <h2 class="right-h1">Summary</h2>
+                    <p>Fresher Game Developer passionate about RPG Action games, eager to work in a professional environment where I can grow my skills and contribute to the gaming industry.</p>
+                </div>
+        
+                <div class="section">
+                    <h2 class="right-h1">Projects</h2>
+        
+                    <h3>Supermarket Simulator Prototype</h3>
+                    <p>A prototype for a supermarket game including core features like movement, customer management, products, store management, and save-load systems. Optimized for mobile.</p>
+                    <p>Source code: <a href="https://github.com/hieki-chan/Supermarket-Simulator-Prototype" target="_blank">Supermarket Simulator Prototype</a></p>
+        
+                    <h3>My Fast Food</h3>
+                    <p>A game developed based on the Supermarket Simulator Prototype. Available on Google Play with 1M+ downloads.</p>
+        
+                    <h3>FiniState</h3>
+                    <p>An Editor Tool for visualizing Finite State Machines, available on the Unity Asset Store with 100+ downloads and a 5-star rating.</p>
+                </div>
+        
+
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
 </body>
 </html>

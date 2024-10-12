@@ -1,3 +1,3 @@
-My Unity Developer CV using Canva html embeded code
+My Unity Developer CV
 
 > https://hieki-chan.github.io/my-cv/

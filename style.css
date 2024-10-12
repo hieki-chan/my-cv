@@ -1,0 +1,88 @@
+body {
+    margin: 20px;
+    padding: 0;
+    font-family: Arial, sans-serif;
+    font-family: 'Nunito', sans-serif;
+    font-size: 14px;
+    background-image: url("/resources/background.png");
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+}
+
+.page {
+    width: 210mm;
+    height: 297mm;
+    margin: 20px auto;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 0 0 20px rgba(0, 0, 0, .5);
+    border-radius: 12px;
+    overflow: hidden;
+    background-color: #ffffff;
+}
+
+#svg-content {
+    width: 100%;
+    height: 100%;
+    border: 2px solid #ffffff;
+    border-radius: 10px;
+}
+
+#left {
+    width: 32%;
+    height: 100%;
+    padding: 0;
+    margin: 0;
+    border-right: 2px solid #eaeaea;
+    background-image: url('resources/blur-black.jpg'); 
+    object-fit: cover;
+    color: white;
+}
+
+#right {
+    width: 68%;
+    color: #ffffff;
+}
+
+.profile-pic {
+    width: 200px;
+    height: 250px;
+    border-radius: 3%;
+    border: 2px solid white; /* Viền màu trắng */
+    object-fit: cover; /* Giúp hình ảnh vừa khít với khung */
+    margin-top: 20px;
+    margin-bottom: 20px;
+    margin: auto;
+}
+.right-section {
+    width: 70%;
+    padding-left: 20px;
+}
+h1 {
+    font-size: 36px;
+    font-weight: 700;
+    color: white;
+}
+
+p {
+    font-size: 16px;
+    line-height: 1.6;
+}
+.contact-info, .skills, .languages {
+    margin-bottom: 30px;
+}
+.skills ul, .languages ul {
+    padding-left: 20px;
+}
+ul li {
+    list-style-type: square;
+}
+
+#left {
+    background-image: url('resources/blur-black.jpg'); 
+    object-fit: cover;
+    color: white;
+}
