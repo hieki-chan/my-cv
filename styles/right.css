@@ -1,0 +1,20 @@
+.right-section {
+    color: #474747;
+    margin-bottom: 30px;
+    margin-left: 20px;
+}
+
+.right-h1 {
+    font-size: 13;
+    font-family: Nunito-Black;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    color: #3b3b3b;
+}
+
+.highlight-text-1 {
+    font-weight: bold;
+    color: #3b3b3b;
+}

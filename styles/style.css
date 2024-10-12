@@ -1,0 +1,50 @@
+body {
+    margin: 20px;
+    padding: 0;
+    font-size: 14px;
+    font-family: Nunito-Regular;
+    background-image: url("/resources/background.png");
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+}
+
+.page {
+    width: 210mm;
+    height: 297mm;
+    margin: 20px auto;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 0 0 20px rgba(0, 0, 0, .5);
+    border-radius: 12px;
+    overflow: hidden;
+    background-color: #ffffff;
+}
+
+#right {
+    width: 68%;
+    color: #ffffff;
+}
+
+li {
+    margin-top: 4px;
+    margin-bottom: 4px;
+}
+
+ul {
+    margin-left: -10px;
+    margin-top: 10px;
+}
+
+p {
+    font-size: 16px;
+    line-height: 1.6;
+}
+
+.link-1 {
+    color: #ffffff;
+    font-style: normal;
+    text-decoration: none;
+}

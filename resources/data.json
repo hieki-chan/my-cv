@@ -1,0 +1,65 @@
+{
+    "name": "KIỀU MINH HIẾU",
+    "contact": {
+        "address": "Hà Nội, Việt Nam",
+        "phone": "0963056220",
+        "email": "hieuca205@gmail.com",
+        "facebook": "facebook.com/hieki.chan",
+        "github": "github.com/hieki-chan"
+    },
+    "education": {
+        "school": "Trường Đại Học Công Nghiệp Hà Nội (HaUI)",
+        "GPA": "3.x/4.0"
+    },
+    "skills": [
+        "C# .Net Programming",
+        "OOP, SOLID Principles",
+        "Design Patterns",
+        "Unity 3D",
+        "Mobile Game Publishing",
+        "Version Control: GitHub"
+    ],
+    "languages": [
+        "English: Elementary"
+    ],
+    "header": "Fresher Game Developer",
+    "summary": "I am a passionate and dedicated software developer with a strong foundation in C# .NET programming and a passion for creating innovative solutions. I thrive on challenges and am always looking for opportunities to expand my skills and knowledge.",
+    "unity skills": [
+        {
+            "title": "Tweens",
+            "description": "DoTween, LeanTween"
+        },
+        {
+            "title": "Asynchronous",
+            "description": "Coroutines, async/await, Task/Unitask"
+        },
+        {
+            "title": "Resources Management",
+            "description": "Resources, Addressables, AssetBundles"
+        },
+        {
+            "title": "Unity Editor",
+            "description": "Write average custom Attribute/Inspector/Editor Window"
+        },
+        {
+            "title": "Unity Ads",
+            "description": "Implement basic mobile Ads"
+        },
+        {
+            "title": "Unit Testing",
+            "description": "Write basic unit tests"
+        }
+    ],
+    "projects": [
+        {
+            "title": "My Fast Food",
+            "duration": "2023.09 - 2023.12",
+            "description": [
+                "A simple mobile game about cooking fast food",
+                "Implement using Unity 3D",
+                "Used C# .NET, DoTween, LeanTween, Addressables, ... for development"
+            ],
+            "link": "https://github.com/hieki-chan/MyFastFood"
+        }
+    ]
+}

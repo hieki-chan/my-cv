@@ -4,42 +4,62 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Unity CV</title>
-    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="style.css">
-    <link rel="stylesheet" href="left.css">
-    <link rel="stylesheet" href="right.css">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.7.1/jszip.min.js"></script>
+    <!-- <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700&display=swap" rel="stylesheet"> -->
+    <link rel="stylesheet" href="styles/style.css">
+    <link rel="stylesheet" href="styles/left.css">
+    <link rel="stylesheet" href="styles/right.css">
+    <link rel="stylesheet" href="styles/font.css">
+
+    <style id="fonts1" type="text/css" >
+
+        @font-face {
+            font-family: Nunito-Regular;
+            src: url("fonts/Nunito/static/Nunito-Light.ttf") format("truetype");
+        }
+
+        @font-face {
+            font-family: Nunito-Bold;
+            src: url("fonts/Nunito/Nunito-VariableFont_wght.ttf") format("truetype");
+        }  
+
+        @font-face {
+            font-family: Nunito-Black;
+            src: url("fonts/Nunito/static/Nunito-Black.ttf") format("truetype");
+        }              
+        
+    </style>
+    
 </head>
 <body>
     <div id="pages"></div>
 
-    <!-- <div class="page">
-        <object data="resources/cv.svg" type="image/svg+xml" id="svg-content"></object>
-    </div> -->
-
     <div class="page">
         <div id="left">
-            <img src="resources/profile-picture.jpg"Profile Picture" class="profile-pic">
-
-            <h2>Kiều Minh Hiếu</h2>
-            <div class="contact-info">
-                <h2 class="left-h1">Contact</h2>
-                <p>Email: hieuca205@gmail.com</p>
-                <p>Phone: 0963056220</p>
-                <p>Facebook: <a href="https://facebook.com/hieki.chan" target="_blank" style="color: white;">facebook.com/hieki.chan</a></p>
-                <p>GitHub: <a href="https://github.com/hieki-chan" target="_blank" style="color: white;">github.com/hieki-chan</a></p>
+            <div class="profile-pic-container">
+                <img src="resources/profile-picture.jpg" alt="Profile Picture" class="profile-pic">
             </div>
 
-            <div class="section">
+            <p id="name">your name here</p>
+            <div id="line"></div>
+            <div class="left-section">
+                <h2 class="left-h1">Contact</h2>
+                <p class="contact">Hà Nội, Việt Nam</p>
+                <p class="contact">0963056220</p>
+                <p class="contact">hieuca205@gmail.com</p>
+                <p><a href="https://facebook.com/hieki.chan" target="_blank" class="link-1 contact">facebook.com/hieki.chan</a></p>
+                <p><a href="https://github.com/hieki-chan" target="_blank"  class="link-1 contact">github.com/hieki-chan</a></p>
+            </div>
+
+            <div class="left-section">
                 <h2 class="left-h1">Education</h2>
                 <ul class="left-list">
                     <li>Trường Đại Học Công Nghiệp Hà Nội (HaUI)</li>
-                    <li>GPA: 3.0/4.0</li>
+                    <li>GPA: 3.x/4.0</li>
                 </ul>
             </div>
 
-            <div class="a">
-                <h3 class="left-h1">Skills</h3>
+            <div class="left-section">
+                <h2 class="left-h1">Skills</h2>
                 <ul class="left-list">
                     <li>C# .Net Programming</li>
                     <li>OOP, SOLID Principles</li>
@@ -50,7 +70,7 @@
                 </ul>
             </div>
 
-            <div class="languages">
+            <div class="left-section">
                 <h2 class="left-h1">Languages</h2>
                 <ul class="left-list">
                     <li>English: Elementary</li>
@@ -64,12 +84,24 @@
             </div>
 
             <div>
-                <div class="section">
+                <div class="right-section">
                     <h2 class="right-h1">Summary</h2>
                     <p>Fresher Game Developer passionate about RPG Action games, eager to work in a professional environment where I can grow my skills and contribute to the gaming industry.</p>
                 </div>
+
+                <div class="right-section">
+                    <h2 class="right-h1">Unity Technical Skills</h2>
+                    <ul>
+                        <li><span class="highlight-text-1">Tweens:</span> DoTween, LeanTween</li>
+                        <li><span class="highlight-text-1">Asynchronous:</span> Coroutines, async/await, Task/Unitask</li>
+                        <li><span class="highlight-text-1">Resources Management:</span> Resources, Addressables, AssetBundles</li>
+                        <li><span class="highlight-text-1">Unity Editor:</span> Write average custom Attribute/Inspector/Editor Window</li>
+                        <li><span class="highlight-text-1">Unity Ads:</span> Implement basic mobile Ads</li>
+                        <li><span class="highlight-text-1">Unit Testing:</span> Write basic unit tests</li>
+                    </ul>
+                </div>
         
-                <div class="section">
+                <div class="right-section">
                     <h2 class="right-h1">Projects</h2>
         
                     <h3>Supermarket Simulator Prototype</h3>
@@ -88,6 +120,6 @@
         </div>
     </div>
 
-    <script src="script.js"></script>
+    <script src="scripts/script.js"></script>
 </body>
 </html>
