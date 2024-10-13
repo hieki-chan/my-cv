@@ -60,6 +60,14 @@
                 "Used C# .NET, DoTween, LeanTween, Addressables, ... for development"
             ],
             "link": "https://github.com/hieki-chan/MyFastFood"
+        },
+        {
+            "title": "FiniState",
+            "duration": "2023.09 - 2023.12",
+            "description": [
+                "Editor tool for visualizing Finite State Machines"
+            ],
+            "link": "https://github.com/lustie/FiniState-Documentation"
         }
     ]
 }

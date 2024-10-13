@@ -3,8 +3,9 @@
     height: 100%;
     padding: 0;
     margin: 0;
-    background-image: url('/resources/blur-black.jpg'); 
+    background-image: url("../resources/blur-black.jpg"); 
     object-fit: cover;
+    border-radius: 10px 0 0 10px;
     color: white;
 }
 
@@ -48,6 +49,8 @@
 .contact {
     color: #b4b4b4;
     font-size: 15px;
+    margin-top: 10px;
+    margin-bottom: 10px;
 }
 
 .left-section {
@@ -55,7 +58,7 @@
 }
 
 .left-h1 {
-    font-size: 14;
+    font-size: 18px;
     font-family: Nunito-Bold;
     text-transform: uppercase;
     letter-spacing: 2px;

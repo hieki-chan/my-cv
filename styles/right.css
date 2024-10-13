@@ -1,11 +1,53 @@
+#right {
+    width: 66%;
+    height: 100%;
+    color: #ffffff;
+    margin: 0;
+}
+
 .right-section {
     color: #474747;
-    margin-bottom: 30px;
+    margin-top: 15px;
+    margin-bottom: 15px;
     margin-left: 20px;
+    margin-right: 20px;
+}
+
+#header {
+    background-image: url("../resources/modern-dot.png");
+    background-size: auto;
+    background-position: 70% 70%;
+    margin-top: 0;
+    margin-left: 0;
+    margin-right: 0;
+    margin-bottom: auto;
+    padding: 0;
+}
+
+#header-titles {
+    margin: 0;
+    padding: 0;
+    margin-left: 20px;
+    margin-top: 20px;
+}
+
+#line-thin {
+    height: 1px;
+    width: 100%;
+    background-color: #b4b4b4;
+}
+
+.h-title {
+    color: #191919;
+    font-size: 20px;
+    font-family: Nunito-Bold;
+    font-weight: 850;
+    text-transform: uppercase;
+    letter-spacing: 2px;
 }
 
 .right-h1 {
-    font-size: 13;
+    font-size: 20px;
     font-family: Nunito-Black;
     text-transform: uppercase;
     letter-spacing: 2px;
@@ -14,7 +56,46 @@
     color: #3b3b3b;
 }
 
+.right-h2{
+    font-size: 17px;
+    font-family: Nunito-Bold;
+    font-weight: 700;
+    text-transform: capitalize;
+    letter-spacing: 1px;
+    word-spacing: -1px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    color: #3b3b3b;
+}
+
 .highlight-text-1 {
     font-weight: bold;
     color: #3b3b3b;
+}
+
+.line-h {
+    height: 5px;
+    width: 65px;
+    background-color: #d8d8d8;
+    border-radius: 15px;
+    margin-top: -5px;
+    margin-bottom: 5px;
+}
+
+.project-item {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.project-duration {
+    flex: 1;
+    text-align:center;
+    align-self: flex-start;
+    margin-top: 2px;
+}
+
+.project-details {
+    margin-left: 20px;
+    flex: 10;
 }

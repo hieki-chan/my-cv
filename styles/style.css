@@ -3,7 +3,7 @@ body {
     padding: 0;
     font-size: 14px;
     font-family: Nunito-Regular;
-    background-image: url("/resources/background.png");
+    background-image: url("../resources/background.png");
     background-size: cover;
     background-repeat: no-repeat;
     background-attachment: fixed;
@@ -19,13 +19,8 @@ body {
     align-items: center;
     box-shadow: 0 0 20px rgba(0, 0, 0, .5);
     border-radius: 12px;
-    overflow: hidden;
     background-color: #ffffff;
-}
-
-#right {
-    width: 68%;
-    color: #ffffff;
+    overflow: inherit;
 }
 
 li {
@@ -47,4 +42,20 @@ p {
     color: #ffffff;
     font-style: normal;
     text-decoration: none;
+}
+
+.link-1:hover {
+    color: #ffffff;
+    background-color: #78a1fc;
+    transition: color 0.3s ease, background-color 0.3s ease;
+}
+
+.link-2 {
+    color: #3b3b3b;
+}
+
+.link-2:hover {
+    color: #ffffff;
+    background-color: #78a1fc;
+    transition: color 0.3s ease, background-color 0.3s ease;
 }
