@@ -1,163 +1,465 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Unity CV</title>
-    <!-- <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700&display=swap" rel="stylesheet"> -->
-    <link rel="stylesheet" href="styles/style.css">
-    <link rel="stylesheet" href="styles/left.css">
-    <link rel="stylesheet" href="styles/right.css">
-    <link rel="stylesheet" href="styles/font.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>My Resume Collection</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-    <style id="fonts1" type="text/css" >
+    :root {
+      --bg: #f5f3ef;
+      --surface: #ffffff;
+      --border: #e2ddd6;
+      --text: #1a1814;
+      --muted: #8a8478;
+      --accent: #c8601a;
+      --accent-light: #fdf0e8;
+      --mono: 'DM Mono', monospace;
+      --sans: 'DM Sans', sans-serif;
+    }
 
-        @font-face {
-            font-family: Nunito-Regular;
-            src: url("fonts/Nunito/static/Nunito-Light.ttf") format("truetype");
-        }
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--sans);
+      min-height: 100vh;
+      min-height: 100dvh;
+    }
 
-        @font-face {
-            font-family: Nunito-Bold;
-            src: url("fonts/Nunito/Nunito-VariableFont_wght.ttf") format("truetype");
-        }  
+    /* ── Desktop layout ── */
+    .layout {
+      display: flex;
+      height: 100vh;
+      height: 100dvh;
+      overflow: hidden;
+    }
 
-        @font-face {
-            font-family: Nunito-Black;
-            src: url("fonts/Nunito/static/Nunito-Black.ttf") format("truetype");
-        }              
-        
-    </style>
-    
+    .sidebar {
+      width: 260px;
+      flex-shrink: 0;
+      background: var(--surface);
+      border-right: 1px solid var(--border);
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+
+    .sidebar-header {
+      padding: 28px 20px 20px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .label {
+      font-family: var(--mono);
+      font-size: 10px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 8px;
+    }
+
+    h1 {
+      font-size: 20px;
+      font-weight: 300;
+      letter-spacing: -0.02em;
+    }
+
+    h1 strong { font-weight: 500; }
+
+    .divider {
+      width: 28px;
+      height: 2px;
+      background: var(--accent);
+      margin-top: 12px;
+    }
+
+    .cv-list {
+      flex: 1;
+      overflow-y: auto;
+      padding: 12px 10px;
+    }
+
+    .cv-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 11px 12px;
+      border-radius: 7px;
+      cursor: pointer;
+      transition: background 0.15s;
+      border: 1px solid transparent;
+      animation: fadeUp 0.3s ease both;
+    }
+
+    .cv-item:hover { background: var(--bg); }
+
+    .cv-item.active {
+      background: var(--accent-light);
+      border-color: rgba(200, 96, 26, 0.2);
+    }
+
+    .cv-icon {
+      width: 34px;
+      height: 34px;
+      background: var(--accent-light);
+      border-radius: 6px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .cv-item.active .cv-icon { background: rgba(200, 96, 26, 0.15); }
+
+    .cv-icon svg { width: 16px; height: 16px; color: var(--accent); }
+
+    .cv-text { flex: 1; min-width: 0; }
+
+    .cv-name {
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--text);
+    }
+
+    .cv-tag {
+      font-family: var(--mono);
+      font-size: 10px;
+      color: var(--muted);
+      margin-top: 2px;
+    }
+
+    .sidebar-footer {
+      padding: 14px 20px;
+      border-top: 1px solid var(--border);
+      font-family: var(--mono);
+      font-size: 10px;
+      color: var(--muted);
+      letter-spacing: 0.05em;
+    }
+
+    /* ── Viewer ── */
+    .viewer {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      background: #e8e4de;
+      overflow: hidden;
+    }
+
+    .viewer-bar {
+      height: 46px;
+      background: var(--surface);
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      padding: 0 16px;
+      gap: 10px;
+      flex-shrink: 0;
+    }
+
+    .viewer-bar-title {
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--text);
+    }
+
+    .viewer-bar-tag {
+      font-family: var(--mono);
+      font-size: 10px;
+      color: var(--muted);
+    }
+
+    .open-btn {
+      margin-left: auto;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-family: var(--mono);
+      font-size: 10px;
+      letter-spacing: 0.05em;
+      color: var(--accent);
+      background: var(--accent-light);
+      border: 1px solid rgba(200,96,26,0.2);
+      border-radius: 5px;
+      padding: 5px 10px;
+      cursor: pointer;
+      text-decoration: none;
+      transition: background 0.15s;
+      white-space: nowrap;
+    }
+
+    .open-btn:hover { background: rgba(200,96,26,0.15); }
+    .open-btn svg { width: 11px; height: 11px; flex-shrink: 0; }
+
+    iframe {
+      flex: 1;
+      width: 100%;
+      border: none;
+    }
+
+    .empty-viewer {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      color: var(--muted);
+      gap: 12px;
+    }
+
+    .empty-viewer svg { width: 44px; height: 44px; opacity: 0.3; }
+
+    .empty-viewer p {
+      font-size: 12px;
+      font-family: var(--mono);
+      letter-spacing: 0.05em;
+    }
+
+    .empty-list {
+      padding: 32px 16px;
+      text-align: center;
+      color: var(--muted);
+      font-size: 11px;
+      line-height: 1.8;
+      font-family: var(--mono);
+    }
+
+    .empty-list code {
+      background: var(--bg);
+      padding: 2px 5px;
+      border-radius: 3px;
+      font-size: 10px;
+    }
+
+    /* ── Mobile bottom sheet ── */
+    .mobile-header {
+      display: none;
+      background: var(--surface);
+      border-bottom: 1px solid var(--border);
+      padding: 16px 20px 12px;
+    }
+
+    .mobile-header h1 { font-size: 18px; }
+
+    .tab-bar {
+      display: none;
+      background: var(--surface);
+      border-top: 1px solid var(--border);
+      overflow-x: auto;
+      flex-shrink: 0;
+      scrollbar-width: none;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    .tab-bar::-webkit-scrollbar { display: none; }
+
+    .tab-bar-inner {
+      display: flex;
+      padding: 8px 12px;
+      gap: 6px;
+      min-width: max-content;
+    }
+
+    .tab-item {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      padding: 7px 12px;
+      border-radius: 20px;
+      cursor: pointer;
+      border: 1px solid var(--border);
+      background: transparent;
+      transition: background 0.15s, border-color 0.15s;
+      animation: fadeUp 0.3s ease both;
+      white-space: nowrap;
+    }
+
+    .tab-item:hover { background: var(--bg); }
+
+    .tab-item.active {
+      background: var(--accent-light);
+      border-color: rgba(200,96,26,0.3);
+    }
+
+    .tab-item svg { width: 13px; height: 13px; color: var(--accent); flex-shrink: 0; }
+
+    .tab-label {
+      font-size: 12px;
+      font-weight: 500;
+      color: var(--text);
+    }
+
+    /* ── Tablet: narrower sidebar ── */
+    @media (max-width: 768px) {
+      .sidebar { display: none; }
+      .mobile-header { display: block; }
+      .tab-bar { display: flex; }
+
+      .layout {
+        flex-direction: column;
+      }
+
+      .viewer {
+        flex: 1;
+        min-height: 0;
+      }
+
+      .viewer-bar-tag { display: none; }
+    }
+
+    @media (min-width: 769px) and (max-width: 1024px) {
+      .sidebar { width: 200px; }
+      .cv-tag { display: none; }
+    }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(6px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+  </style>
 </head>
 <body>
-    <div id="pages"></div>
+  <!-- Mobile header -->
+  <div class="mobile-header">
+    <div class="label">My Resumes</div>
+    <h1>Resume <strong>Collection</strong></h1>
+  </div>
 
-    <div class="page">
-        <!-- Left Section -->
-        <div id="left">
-            <div class="profile-pic-container">
-                <img src="resources/profile-picture.jpg" alt="Profile Picture" class="profile-pic">
-            </div>
+  <div class="layout">
+    <!-- Desktop sidebar -->
+    <aside class="sidebar">
+      <div class="sidebar-header">
+        <div class="label">My Resumes</div>
+        <h1><strong>Collection</strong></h1>
+        <div class="divider"></div>
+      </div>
+      <div class="cv-list" id="cv-list"></div>
+      <div class="sidebar-footer" id="footer"></div>
+    </aside>
 
-            <p id="name">your name here</p>
-            <div id="line"></div>
-            <div class="left-section">
-                <h2 class="left-h1">Contact</h2>
-                <a href="https://www.google.com/maps/search/Hanoi" target="_blank" class="link-1 contact">Hà Nội, Việt Nam</a>
-                <p class="contact">0963056220</p>
-                <p><a href="mailto:hieuca205@gmail.com" class="link-1 contact">hieuca205@gmail.com</a></p>
-                <p><a href="https://facebook.com/hieki.chan" target="_blank" class="link-1 contact">facebook.com/hieki.chan</a></p>
-                <p><a href="https://github.com/hieki-chan" target="_blank"  class="link-1 contact">github.com/hieki-chan</a></p>
-            </div>
-
-            <div class="left-section">
-                <h2 class="left-h1">Education</h2>
-                <ul class="left-list">
-                    <li>Trường Đại Học Công Nghiệp Hà Nội (HaUI)</li>
-                    <li>GPA: 3.x/4.0</li>
-                </ul>
-            </div>
-
-            <div class="left-section">
-                <h2 class="left-h1">Skills</h2>
-                <ul class="left-list">
-                    <li>C# .Net Programming</li>
-                    <li>OOP, SOLID Principles</li>
-                    <li>Design Patterns</li>
-                    <li>Unity 3D</li>
-                    <li>Mobile Game Publishing</li>
-                    <li>Version Control: GitHub</li>
-                </ul>
-            </div>
-
-            <div class="left-section">
-                <h2 class="left-h1">Languages</h2>
-                <ul class="left-list">
-                    <li>English: Elementary</li>
-                </ul>
-            </div>
-        </div>
-        
-        <!-- Right Section -->
-        <div id="right">
-            <div id="header">
-                <div id="header-titles">
-                    <h1 class="h-title">Freshder Game Developer</h1>
-                    <h1 class="h-title">Unity 3D</h1>
-                </div>
-                <div id="line-thin"></div>
-            </div>
-
-            <div>
-                <div class="right-section">
-                    <h2 class="right-h1">Summary</h2>
-                    <div class="line-h"></div>
-                    
-                    <p>Fresher Game Developer passionate about RPG Action games, eager to work in a professional environment where I can grow my skills and contribute to the gaming industry.</p>
-                </div>
-
-                <div class="right-section">
-                    <h2 class="right-h1">Unity Technical Skills</h2>
-                    <div class="line-h"></div>
-                    <ul>
-                        <li><span class="highlight-text-1">Tweens:</span> DoTween, LeanTween</li>
-                        <li><span class="highlight-text-1">Asynchronous:</span> Coroutines, async/await, Task/Unitask</li>
-                        <li><span class="highlight-text-1">Resources Management:</span> Resources, Addressables, AssetBundles</li>
-                        <li><span class="highlight-text-1">Unity Editor:</span> Write average custom Attribute/Inspector/Editor Window</li>
-                        <li><span class="highlight-text-1">Unity Ads:</span> Implement basic mobile Ads</li>
-                        <li><span class="highlight-text-1">Unit Testing:</span> Write basic unit tests</li>
-                    </ul>
-                </div>
-        
-                <div class="right-section">
-                    <h2 class="right-h1">Projects</h2>
-                    <div class="line-h"></div>
-
-                    <div id="projects">
-                        <div class="project-item">
-                            <div class="project-duration">
-                                <p>Aug Sep, 2024</p>
-                            </div>
-                            <div class="project-details"> 
-                                <h3 class="right-h2">Supermarket Simulator Prototype</h3>
-                                <ul>
-                                    <li>A prototype for a supermarket game including core features like movement, customer management, products, store management, and save-load systems. Optimized for mobile.</li>
-                                    <li>Source code: <a href="https://github.com/hieki-chan/Supermarket-Simulator-Prototype" target="_blank" class="link-2">Supermarket Simulator Prototype</a></li>
-                                </ul>
-                            </div>
-                        </div>
-                        
-                        <div class="project-item">
-                            <div class="project-duration">
-                                <p>2025</p>
-                            </div>
-                            <div class="project-details"> 
-                                <h3 class="right-h2">My Fast Food</h3>
-                                <ul>
-                                    <li>A game developed based on the Supermarket Simulator Prototype. Available on Google Play with 1M+ downloads.</li>
-                                </ul>
-                            </div>
-                        </div>
-            
-                        <div class="project-item">
-                            <div class="project-duration">
-                                <p>2026</p>
-                            </div>
-                            <div class="project-details"> 
-                                <h3 class="right-h2">FiniState</h3>
-                                <ul>
-                                    <li>An Editor Tool for visualizing Finite State Machines, available on the Unity Asset Store with 100+ downloads and a 5-star rating.</li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-            </div>
-        </div>
+    <!-- Viewer -->
+    <div class="viewer" id="viewer">
+      <div class="empty-viewer">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2">
+          <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+          <polyline points="14 2 14 8 20 8"/>
+        </svg>
+        <p>Select a resume to preview</p>
+      </div>
     </div>
+  </div>
 
-    <script src="scripts/script.js"></script>
+  <!-- Mobile tab bar -->
+  <div class="tab-bar" id="tab-bar">
+    <div class="tab-bar-inner" id="tab-bar-inner"></div>
+  </div>
+
+  <script>
+    const CV_FILES = [
+      { file: "resumes/resume-intern.pdf",  label: "Intern",          tag: "Entry Level" },
+      { file: "resumes/resume-junior.pdf",  label: "Junior",          tag: "Junior Developer" },
+      { file: "resumes/resume-middle.pdf",  label: "Middle",          tag: "Mid-Level Developer" },
+      { file: "resumes/resume-senior.pdf",  label: "Senior",          tag: "Senior Developer" },
+      { file: "resumes/resume-lead.pdf",    label: "Tech Lead",       tag: "Team Lead" },
+      { file: "resumes/resume-manager.pdf", label: "Manager",         tag: "Engineering Manager" },
+    ];
+
+    const pdfIcon = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+      <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+      <polyline points="14 2 14 8 20 8"/>
+      <line x1="9" y1="13" x2="15" y2="13"/>
+      <line x1="9" y1="17" x2="13" y2="17"/>
+    </svg>`;
+
+    const extIcon = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+      <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/>
+      <polyline points="15 3 21 3 21 9"/>
+      <line x1="10" y1="14" x2="21" y2="3"/>
+    </svg>`;
+
+    let activeDesktop = null;
+    let activeMobile = null;
+
+    async function checkFile(url) {
+      try {
+        const res = await fetch(url, { method: "HEAD" });
+        return res.ok;
+      } catch {
+        return false;
+      }
+    }
+
+    function openViewer(cv, desktopItem, mobileItem) {
+      if (activeDesktop) activeDesktop.classList.remove("active");
+      if (activeMobile) activeMobile.classList.remove("active");
+
+      if (desktopItem) { desktopItem.classList.add("active"); activeDesktop = desktopItem; }
+      if (mobileItem) { mobileItem.classList.add("active"); activeMobile = mobileItem; }
+
+      document.getElementById("viewer").innerHTML = `
+        <div class="viewer-bar">
+          <span class="viewer-bar-title">${cv.label}</span>
+          <span class="viewer-bar-tag">${cv.tag}</span>
+          <a class="open-btn" href="${cv.file}" target="_blank" rel="noopener">
+            ${extIcon} Open in new tab
+          </a>
+        </div>
+        <iframe src="${cv.file}" title="${cv.label} Resume"></iframe>
+      `;
+    }
+
+    async function init() {
+      const list = document.getElementById("cv-list");
+      const footer = document.getElementById("footer");
+      const tabInner = document.getElementById("tab-bar-inner");
+
+      const checks = await Promise.all(CV_FILES.map(cv => checkFile(cv.file)));
+      const available = CV_FILES.filter((_, i) => checks[i]);
+
+      if (available.length === 0) {
+        list.innerHTML = `<div class="empty-list">No resumes found.<br/>Add PDF files to<br/><code>resumes/</code> folder.</div>`;
+        tabInner.innerHTML = `<div class="empty-list" style="padding:10px 16px">No resumes found — add PDF files to <code>resumes/</code></div>`;
+        return;
+      }
+
+      const desktopItems = [];
+      const mobileItems = [];
+
+      available.forEach((cv, i) => {
+        const desktopItem = document.createElement("div");
+        desktopItem.className = "cv-item";
+        desktopItem.style.animationDelay = `${i * 60}ms`;
+        desktopItem.innerHTML = `
+          <div class="cv-icon">${pdfIcon}</div>
+          <div class="cv-text">
+            <div class="cv-name">${cv.label}</div>
+            <div class="cv-tag">${cv.tag}</div>
+          </div>
+        `;
+        desktopItems.push(desktopItem);
+
+        const mobileItem = document.createElement("div");
+        mobileItem.className = "tab-item";
+        mobileItem.style.animationDelay = `${i * 60}ms`;
+        mobileItem.innerHTML = `${pdfIcon}<span class="tab-label">${cv.label}</span>`;
+        mobileItems.push(mobileItem);
+
+        desktopItem.addEventListener("click", () => openViewer(cv, desktopItem, mobileItems[i]));
+        mobileItem.addEventListener("click", () => openViewer(cv, desktopItems[i], mobileItem));
+
+        list.appendChild(desktopItem);
+        tabInner.appendChild(mobileItem);
+      });
+
+      footer.textContent = `${available.length} resume${available.length > 1 ? "s" : ""} available`;
+
+      desktopItems[0].click();
+    }
+
+    init();
+  </script>
 </body>
 </html>
