@@ -17,8 +17,10 @@
       --muted: #8a8478;
       --accent: #c8601a;
       --accent-light: #fdf0e8;
+      --sidebar-w: 260px;
       --mono: 'DM Mono', monospace;
       --sans: 'DM Sans', sans-serif;
+      --sidebar-transition: 0.25s cubic-bezier(0.4, 0, 0.2, 1);
     }
 
     body {
@@ -29,7 +31,6 @@
       min-height: 100dvh;
     }
 
-    /* ── Desktop layout ── */
     .layout {
       display: flex;
       height: 100vh;
@@ -38,18 +39,27 @@
     }
 
     .sidebar {
-      width: 260px;
+      width: var(--sidebar-w);
       flex-shrink: 0;
       background: var(--surface);
       border-right: 1px solid var(--border);
       display: flex;
       flex-direction: column;
       overflow: hidden;
+      transition: width var(--sidebar-transition), opacity var(--sidebar-transition), border-color var(--sidebar-transition);
+    }
+
+    .sidebar.collapsed {
+      width: 0;
+      opacity: 0;
+      border-right-color: transparent;
+      pointer-events: none;
     }
 
     .sidebar-header {
       padding: 28px 20px 20px;
       border-bottom: 1px solid var(--border);
+      flex-shrink: 0;
     }
 
     .label {
@@ -65,6 +75,7 @@
       font-size: 20px;
       font-weight: 300;
       letter-spacing: -0.02em;
+      white-space: nowrap;
     }
 
     h1 strong { font-weight: 500; }
@@ -113,7 +124,6 @@
     }
 
     .cv-item.active .cv-icon { background: rgba(200, 96, 26, 0.15); }
-
     .cv-icon svg { width: 16px; height: 16px; color: var(--accent); }
 
     .cv-text { flex: 1; min-width: 0; }
@@ -138,15 +148,18 @@
       font-size: 10px;
       color: var(--muted);
       letter-spacing: 0.05em;
+      white-space: nowrap;
+      flex-shrink: 0;
     }
 
-    /* ── Viewer ── */
+    /* Viewer */
     .viewer {
       flex: 1;
       display: flex;
       flex-direction: column;
       background: #e8e4de;
       overflow: hidden;
+      min-width: 0;
     }
 
     .viewer-bar {
@@ -155,8 +168,39 @@
       border-bottom: 1px solid var(--border);
       display: flex;
       align-items: center;
-      padding: 0 16px;
-      gap: 10px;
+      padding: 0 12px 0 8px;
+      gap: 8px;
+      flex-shrink: 0;
+    }
+
+    /* Toggle button */
+    .toggle-btn {
+      width: 30px;
+      height: 30px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      background: transparent;
+      cursor: pointer;
+      flex-shrink: 0;
+      color: var(--muted);
+      transition: background 0.15s, color 0.15s, border-color 0.15s;
+    }
+
+    .toggle-btn:hover {
+      background: var(--bg);
+      color: var(--text);
+      border-color: #c8bdb2;
+    }
+
+    .toggle-btn svg { width: 15px; height: 15px; }
+
+    .vbar-divider {
+      width: 1px;
+      height: 20px;
+      background: var(--border);
       flex-shrink: 0;
     }
 
@@ -189,16 +233,11 @@
       text-decoration: none;
       transition: background 0.15s;
       white-space: nowrap;
+      flex-shrink: 0;
     }
 
     .open-btn:hover { background: rgba(200,96,26,0.15); }
     .open-btn svg { width: 11px; height: 11px; flex-shrink: 0; }
-
-    iframe {
-      flex: 1;
-      width: 100%;
-      border: none;
-    }
 
     .empty-viewer {
       flex: 1;
@@ -218,12 +257,33 @@
       letter-spacing: 0.05em;
     }
 
+    .loading-state {
+      padding: 24px 16px;
+      text-align: center;
+      color: var(--muted);
+      font-family: var(--mono);
+      font-size: 11px;
+      letter-spacing: 0.05em;
+    }
+
+    .loading-dots::after {
+      content: '';
+      animation: dots 1.2s steps(3, end) infinite;
+    }
+
+    @keyframes dots {
+      0%   { content: ''; }
+      33%  { content: '.'; }
+      66%  { content: '..'; }
+      100% { content: '...'; }
+    }
+
     .empty-list {
-      padding: 32px 16px;
+      padding: 24px 16px;
       text-align: center;
       color: var(--muted);
       font-size: 11px;
-      line-height: 1.8;
+      line-height: 1.9;
       font-family: var(--mono);
     }
 
@@ -234,7 +294,7 @@
       font-size: 10px;
     }
 
-    /* ── Mobile bottom sheet ── */
+    /* Mobile */
     .mobile-header {
       display: none;
       background: var(--surface);
@@ -292,26 +352,18 @@
       color: var(--text);
     }
 
-    /* ── Tablet: narrower sidebar ── */
     @media (max-width: 768px) {
-      .sidebar { display: none; }
+      .sidebar { display: none !important; }
       .mobile-header { display: block; }
       .tab-bar { display: flex; }
-
-      .layout {
-        flex-direction: column;
-      }
-
-      .viewer {
-        flex: 1;
-        min-height: 0;
-      }
-
+      .layout { flex-direction: column; }
+      .viewer { flex: 1; min-height: 0; }
       .viewer-bar-tag { display: none; }
+      .toggle-btn, .vbar-divider { display: none; }
     }
 
     @media (min-width: 769px) and (max-width: 1024px) {
-      .sidebar { width: 200px; }
+      :root { --sidebar-w: 200px; }
       .cv-tag { display: none; }
     }
 
@@ -322,49 +374,68 @@
   </style>
 </head>
 <body>
-  <!-- Mobile header -->
   <div class="mobile-header">
     <div class="label">My Resumes</div>
     <h1>Resume <strong>Collection</strong></h1>
   </div>
 
   <div class="layout">
-    <!-- Desktop sidebar -->
-    <aside class="sidebar">
+    <aside class="sidebar" id="sidebar">
       <div class="sidebar-header">
         <div class="label">My Resumes</div>
         <h1><strong>Collection</strong></h1>
         <div class="divider"></div>
       </div>
-      <div class="cv-list" id="cv-list"></div>
+      <div class="cv-list" id="cv-list">
+        <div class="loading-state">Checking files<span class="loading-dots"></span></div>
+      </div>
       <div class="sidebar-footer" id="footer"></div>
     </aside>
 
-    <!-- Viewer -->
     <div class="viewer" id="viewer">
-      <div class="empty-viewer">
+      <div class="viewer-bar">
+        <button class="toggle-btn" id="toggle-btn" title="Hide sidebar" aria-label="Hide sidebar">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <rect x="3" y="3" width="18" height="18" rx="2"/>
+            <line x1="9" y1="3" x2="9" y2="21"/>
+          </svg>
+        </button>
+        <div class="vbar-divider"></div>
+        <span class="viewer-bar-title" id="bar-title"></span>
+        <span class="viewer-bar-tag" id="bar-tag"></span>
+        <a class="open-btn" id="open-btn" href="#" target="_blank" rel="noopener" style="display:none">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/>
+            <polyline points="15 3 21 3 21 9"/>
+            <line x1="10" y1="14" x2="21" y2="3"/>
+          </svg>
+          Open in new tab
+        </a>
+      </div>
+      <div class="empty-viewer" id="empty-viewer">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2">
           <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
           <polyline points="14 2 14 8 20 8"/>
         </svg>
         <p>Select a resume to preview</p>
       </div>
+      <iframe id="pdf-frame" src="" title="Resume" style="display:none; flex:1; width:100%; border:none;"></iframe>
     </div>
   </div>
 
-  <!-- Mobile tab bar -->
   <div class="tab-bar" id="tab-bar">
     <div class="tab-bar-inner" id="tab-bar-inner"></div>
   </div>
 
   <script>
     const CV_FILES = [
-      { file: "resumes/resume-intern.pdf",  label: "Intern",          tag: "Entry Level" },
-      { file: "resumes/resume-junior.pdf",  label: "Junior",          tag: "Junior Developer" },
-      { file: "resumes/resume-middle.pdf",  label: "Middle",          tag: "Mid-Level Developer" },
-      { file: "resumes/resume-senior.pdf",  label: "Senior",          tag: "Senior Developer" },
-      { file: "resumes/resume-lead.pdf",    label: "Tech Lead",       tag: "Team Lead" },
-      { file: "resumes/resume-manager.pdf", label: "Manager",         tag: "Engineering Manager" },
+      { file: "resumes/resume-fresher.pdf", label: "Fresher",  tag: "Fresher" },
+      { file: "resumes/resume-intern.pdf",  label: "Intern",   tag: "Entry Level" },
+      { file: "resumes/resume-junior.pdf",  label: "Junior",   tag: "Junior Developer" },
+      { file: "resumes/resume-middle.pdf",  label: "Middle",   tag: "Mid-Level Developer" },
+      { file: "resumes/resume-senior.pdf",  label: "Senior",   tag: "Senior Developer" },
+      { file: "resumes/resume-lead.pdf",    label: "Tech Lead",tag: "Team Lead" },
+      { file: "resumes/resume-manager.pdf", label: "Manager",  tag: "Engineering Manager" },
     ];
 
     const pdfIcon = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
@@ -374,88 +445,97 @@
       <line x1="9" y1="17" x2="13" y2="17"/>
     </svg>`;
 
-    const extIcon = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-      <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/>
-      <polyline points="15 3 21 3 21 9"/>
-      <line x1="10" y1="14" x2="21" y2="3"/>
-    </svg>`;
-
     let activeDesktop = null;
-    let activeMobile = null;
+    let activeMobile  = null;
+    let sidebarOpen   = true;
 
+    // Sidebar toggle
+    const sidebar   = document.getElementById('sidebar');
+    const toggleBtn = document.getElementById('toggle-btn');
+
+    toggleBtn.addEventListener('click', () => {
+      sidebarOpen = !sidebarOpen;
+      sidebar.classList.toggle('collapsed', !sidebarOpen);
+      toggleBtn.title = sidebarOpen ? 'Hide sidebar' : 'Show sidebar';
+      toggleBtn.setAttribute('aria-label', sidebarOpen ? 'Hide sidebar' : 'Show sidebar');
+    });
+
+    // Check file existence
     async function checkFile(url) {
       try {
-        const res = await fetch(url, { method: "HEAD" });
+        const res = await fetch(url, { method: 'HEAD' });
         return res.ok;
       } catch {
         return false;
       }
     }
 
+    // Open CV in viewer
     function openViewer(cv, desktopItem, mobileItem) {
-      if (activeDesktop) activeDesktop.classList.remove("active");
-      if (activeMobile) activeMobile.classList.remove("active");
+      if (activeDesktop) activeDesktop.classList.remove('active');
+      if (activeMobile)  activeMobile.classList.remove('active');
 
-      if (desktopItem) { desktopItem.classList.add("active"); activeDesktop = desktopItem; }
-      if (mobileItem) { mobileItem.classList.add("active"); activeMobile = mobileItem; }
+      if (desktopItem) { desktopItem.classList.add('active'); activeDesktop = desktopItem; }
+      if (mobileItem)  { mobileItem.classList.add('active');  activeMobile  = mobileItem; }
 
-      document.getElementById("viewer").innerHTML = `
-        <div class="viewer-bar">
-          <span class="viewer-bar-title">${cv.label}</span>
-          <span class="viewer-bar-tag">${cv.tag}</span>
-          <a class="open-btn" href="${cv.file}" target="_blank" rel="noopener">
-            ${extIcon} Open in new tab
-          </a>
-        </div>
-        <iframe src="${cv.file}" title="${cv.label} Resume"></iframe>
-      `;
+      document.getElementById('bar-title').textContent = cv.label;
+      document.getElementById('bar-tag').textContent   = cv.tag;
+
+      const openBtn = document.getElementById('open-btn');
+      openBtn.href  = cv.file;
+      openBtn.style.display = '';
+
+      document.getElementById('pdf-frame').src         = cv.file;
+      document.getElementById('empty-viewer').style.display = 'none';
+      document.getElementById('pdf-frame').style.display    = '';
     }
 
     async function init() {
-      const list = document.getElementById("cv-list");
-      const footer = document.getElementById("footer");
-      const tabInner = document.getElementById("tab-bar-inner");
+      const list     = document.getElementById('cv-list');
+      const footer   = document.getElementById('footer');
+      const tabInner = document.getElementById('tab-bar-inner');
 
-      const checks = await Promise.all(CV_FILES.map(cv => checkFile(cv.file)));
+      const checks    = await Promise.all(CV_FILES.map(cv => checkFile(cv.file)));
       const available = CV_FILES.filter((_, i) => checks[i]);
+
+      list.innerHTML = '';
 
       if (available.length === 0) {
         list.innerHTML = `<div class="empty-list">No resumes found.<br/>Add PDF files to<br/><code>resumes/</code> folder.</div>`;
-        tabInner.innerHTML = `<div class="empty-list" style="padding:10px 16px">No resumes found — add PDF files to <code>resumes/</code></div>`;
+        tabInner.innerHTML = `<div class="empty-list" style="padding:10px 16px">No resumes found.</div>`;
+        footer.textContent = '0 resumes available';
         return;
       }
 
       const desktopItems = [];
-      const mobileItems = [];
+      const mobileItems  = [];
 
       available.forEach((cv, i) => {
-        const desktopItem = document.createElement("div");
-        desktopItem.className = "cv-item";
-        desktopItem.style.animationDelay = `${i * 60}ms`;
-        desktopItem.innerHTML = `
+        const di = document.createElement('div');
+        di.className = 'cv-item';
+        di.style.animationDelay = `${i * 55}ms`;
+        di.innerHTML = `
           <div class="cv-icon">${pdfIcon}</div>
           <div class="cv-text">
             <div class="cv-name">${cv.label}</div>
             <div class="cv-tag">${cv.tag}</div>
-          </div>
-        `;
-        desktopItems.push(desktopItem);
+          </div>`;
+        desktopItems.push(di);
 
-        const mobileItem = document.createElement("div");
-        mobileItem.className = "tab-item";
-        mobileItem.style.animationDelay = `${i * 60}ms`;
-        mobileItem.innerHTML = `${pdfIcon}<span class="tab-label">${cv.label}</span>`;
-        mobileItems.push(mobileItem);
+        const mi = document.createElement('div');
+        mi.className = 'tab-item';
+        mi.style.animationDelay = `${i * 55}ms`;
+        mi.innerHTML = `${pdfIcon}<span class="tab-label">${cv.label}</span>`;
+        mobileItems.push(mi);
 
-        desktopItem.addEventListener("click", () => openViewer(cv, desktopItem, mobileItems[i]));
-        mobileItem.addEventListener("click", () => openViewer(cv, desktopItems[i], mobileItem));
+        di.addEventListener('click', () => openViewer(cv, di, mobileItems[i]));
+        mi.addEventListener('click', () => openViewer(cv, desktopItems[i], mi));
 
-        list.appendChild(desktopItem);
-        tabInner.appendChild(mobileItem);
+        list.appendChild(di);
+        tabInner.appendChild(mi);
       });
 
-      footer.textContent = `${available.length} resume${available.length > 1 ? "s" : ""} available`;
-
+      footer.textContent = `${available.length} resume${available.length > 1 ? 's' : ''} available`;
       desktopItems[0].click();
     }
 
