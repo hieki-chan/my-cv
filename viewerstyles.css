@@ -1,0 +1,82 @@
+.viewer {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    background: #020305;
+}
+
+.viewer-bar {
+    height: 44px;
+    display: flex;
+    align-items: center;
+    padding: 0 10px;
+    border-bottom: 1px solid ;
+    background: rgba(10, 12, 16, 0.6);
+    backdrop-filter: blur(6px);
+}
+
+.toggle-btn {
+    background: transparent;
+    border: none;
+    color: white;
+    cursor: pointer;
+}
+
+.viewer-bar-title {
+    margin-left: 8px;
+    font-size: 13px;
+    color: white;
+}
+
+.viewer-bar-tag {
+    margin-left: 6px;
+    font-size: 10px;
+    color: white;
+    visibility: hidden;
+}
+
+.open-btn {
+    margin-left: auto;
+    font-size: 10px;
+    font-family: 'DM Mono', monospace;
+    color: white;;
+    text-decoration: none;
+    opacity: 0.6;
+}
+
+.open-btn:hover {
+    opacity: 1;
+}
+
+.empty-viewer {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-family: 'DM Mono', monospace;
+    font-size: 12px;
+}
+
+.pdf-wrapper {
+    position: relative;
+    flex: 1;
+    overflow: auto;
+}
+
+/* GRID BACKGROUND */
+.pdf-bg {
+    flex: 1;
+    overflow: auto;
+    background-color: #050505;
+    background-image:
+        linear-gradient(rgba(86, 86, 86, 0.36) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(86, 86, 86, 0.36) 1px, transparent 1px);
+    background-size: 14px 14px;
+    pointer-events: none;
+}
+
+#pdf-container {
+    position: relative;
+    z-index: 1;
+}
