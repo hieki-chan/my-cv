@@ -1,6 +1,12 @@
-const publicAsset = (path) => `${import.meta.env.BASE_URL}${path}`;
+export type Resume = {
+  file: string;
+  label: string;
+  tag: string;
+};
 
-export const resumes = [
+const publicAsset = (path: string) => `${import.meta.env.BASE_URL}${path}`;
+
+export const resumes: Resume[] = [
   {
     file: publicAsset("resumes/resume-intern.pdf"),
     label: "Intern",

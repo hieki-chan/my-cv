@@ -1,18 +1,31 @@
+import type { CSSProperties, PointerEvent as ReactPointerEvent } from "react";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import type { PDFDocumentLoadingTask, PDFDocumentProxy, RenderTask } from "pdfjs-dist";
+import type { AnnotationLayerParameters } from "pdfjs-dist/types/src/display/annotation_layer";
+import type { Resume } from "../data/resumes";
 
 const MIN_SIDEBAR_WIDTH = 260;
 const MAX_SIDEBAR_WIDTH = 560;
 const DEFAULT_SIDEBAR_WIDTH = 360;
 
-function publicAsset(path) {
+type PdfArchiveProps = {
+  resumes: Resume[];
+};
+
+type SidebarStyle = CSSProperties & {
+  "--sidebar-bg": string;
+  "--sidebar-w": string;
+};
+
+function publicAsset(path: string) {
   return `${import.meta.env.BASE_URL}${path}`;
 }
 
-function clamp(value, min, max) {
+function clamp(value: number, min: number, max: number) {
   return Math.min(Math.max(value, min), max);
 }
 
-function useDebouncedValue(value, delay) {
+function useDebouncedValue(value: number, delay: number) {
   const [debouncedValue, setDebouncedValue] = useState(value);
 
   useEffect(() => {
@@ -25,13 +38,13 @@ function useDebouncedValue(value, delay) {
 
 function createLinkService() {
   return {
-    addLinkAttributes(link, url) {
+    addLinkAttributes(link: HTMLAnchorElement, url: string) {
       link.href = url;
       link.target = "_blank";
       link.rel = "noopener noreferrer";
     },
     executeNamedAction() {},
-    getAnchorUrl(anchor) {
+    getAnchorUrl(anchor: string) {
       return `#${anchor}`;
     },
     getDestinationHash() {
@@ -41,18 +54,22 @@ function createLinkService() {
   };
 }
 
-export default function PdfArchive({ resumes }) {
+function isRenderingCancelled(error: unknown) {
+  return error instanceof Error && error.name === "RenderingCancelledException";
+}
+
+export default function PdfArchive({ resumes }: PdfArchiveProps) {
   const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
   const [isResizingSidebar, setIsResizingSidebar] = useState(false);
   const [sidebarWidth, setSidebarWidth] = useState(DEFAULT_SIDEBAR_WIDTH);
   const [activeIndex, setActiveIndex] = useState(0);
-  const [pdfDocument, setPdfDocument] = useState(null);
+  const [pdfDocument, setPdfDocument] = useState<PDFDocumentProxy | null>(null);
   const [renderError, setRenderError] = useState("");
   const [isLoadingPdf, setIsLoadingPdf] = useState(false);
   const [isRenderingPdf, setIsRenderingPdf] = useState(false);
   const [viewerWidth, setViewerWidth] = useState(0);
-  const containerRef = useRef(null);
-  const wrapperRef = useRef(null);
+  const containerRef = useRef<HTMLDivElement | null>(null);
+  const wrapperRef = useRef<HTMLDivElement | null>(null);
   const resizeStartRef = useRef({ pointerX: 0, width: DEFAULT_SIDEBAR_WIDTH });
 
   const activeResume = resumes[activeIndex] ?? null;
@@ -73,7 +90,7 @@ export default function PdfArchive({ resumes }) {
     return "";
   }, [isLoadingPdf, isRenderingPdf, renderError]);
 
-  const startSidebarResize = useCallback((event) => {
+  const startSidebarResize = useCallback((event: ReactPointerEvent<HTMLButtonElement>) => {
     if (isSidebarCollapsed) {
       return;
     }
@@ -91,7 +108,7 @@ export default function PdfArchive({ resumes }) {
       return undefined;
     }
 
-    const handlePointerMove = (event) => {
+    const handlePointerMove = (event: PointerEvent) => {
       const delta = event.clientX - resizeStartRef.current.pointerX;
       setSidebarWidth(clamp(
         resizeStartRef.current.width + delta,
@@ -141,8 +158,8 @@ export default function PdfArchive({ resumes }) {
 
   useEffect(() => {
     let isCancelled = false;
-    let loadedPdf = null;
-    let loadingTask = null;
+    let loadedPdf: PDFDocumentProxy | null = null;
+    let loadingTask: PDFDocumentLoadingTask | null = null;
     const container = containerRef.current;
 
     async function loadPdf() {
@@ -172,7 +189,7 @@ export default function PdfArchive({ resumes }) {
 
         setPdfDocument(loadedPdf);
       } catch (error) {
-        if (!isCancelled && error?.name !== "RenderingCancelledException") {
+        if (!isCancelled && !isRenderingCancelled(error)) {
           setRenderError("Unable to load this PDF.");
         }
       } finally {
@@ -196,7 +213,7 @@ export default function PdfArchive({ resumes }) {
 
   useEffect(() => {
     let isCancelled = false;
-    const renderTasks = [];
+    const renderTasks: RenderTask[] = [];
     const container = containerRef.current;
 
     async function renderPdf() {
@@ -211,6 +228,7 @@ export default function PdfArchive({ resumes }) {
       try {
         const pdfjsLib = await import("pdfjs-dist");
         const linkService = createLinkService();
+        const pdfLinkService = linkService as unknown as AnnotationLayerParameters["linkService"];
         const availableWidth = Math.max(320, debouncedViewerWidth - 32);
         const pixelRatio = Math.min(window.devicePixelRatio || 1, 2);
 
@@ -249,8 +267,9 @@ export default function PdfArchive({ resumes }) {
 
           const renderTask = page.render({
             canvasContext: context,
+            canvas,
             viewport,
-            transform: pixelRatio === 1 ? null : [pixelRatio, 0, 0, pixelRatio, 0, 0],
+            transform: pixelRatio === 1 ? undefined : [pixelRatio, 0, 0, pixelRatio, 0, 0],
           });
           renderTasks.push(renderTask);
           await renderTask.promise;
@@ -273,18 +292,28 @@ export default function PdfArchive({ resumes }) {
             linkService,
             page,
             viewport: viewport.clone({ dontFlip: true }),
+            accessibilityManager: undefined,
+            annotationCanvasMap: undefined,
+            annotationEditorUIManager: undefined,
+            annotationStorage: undefined,
+            commentManager: undefined,
+            structTreeLayer: undefined,
           });
 
           await annotationLayer.render({
             annotations,
+            div: annotationLayerElement,
             fieldObjects: null,
             hasJSActions: false,
             imageResourcesPath: "",
+            linkService: pdfLinkService,
+            page,
             renderForms: false,
+            viewport: viewport.clone({ dontFlip: true }),
           });
         }
       } catch (error) {
-        if (!isCancelled && error?.name !== "RenderingCancelledException") {
+        if (!isCancelled && !isRenderingCancelled(error)) {
           setRenderError("Unable to render this PDF.");
         }
       } finally {
@@ -305,6 +334,11 @@ export default function PdfArchive({ resumes }) {
     };
   }, [debouncedViewerWidth, pdfDocument]);
 
+  const sidebarStyle: SidebarStyle = {
+    "--sidebar-bg": `url("${publicAsset("bg_left.jpg")}")`,
+    "--sidebar-w": `${sidebarWidth}px`,
+  };
+
   return (
     <main className="layout">
       <aside
@@ -313,10 +347,7 @@ export default function PdfArchive({ resumes }) {
           isSidebarCollapsed ? "collapsed" : "",
           isResizingSidebar ? "is-resizing" : "",
         ].filter(Boolean).join(" ")}
-        style={{
-          "--sidebar-bg": `url("${publicAsset("bg_left.jpg")}")`,
-          "--sidebar-w": `${sidebarWidth}px`,
-        }}
+        style={sidebarStyle}
       >
         <div className="sidebar-header">
           <div className="header-content">
