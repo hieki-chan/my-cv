@@ -1,0 +1,20 @@
+{
+  "name": "my-cv",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "vite --host 127.0.0.1",
+    "build": "vite build",
+    "preview": "vite preview --host 127.0.0.1",
+    "postinstall": "node scripts/copy-pdf-worker.mjs"
+  },
+  "dependencies": {
+    "pdfjs-dist": "^5.4.449",
+    "react": "19.2.0",
+    "react-dom": "19.2.0"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-react": "^5.1.1",
+    "vite": "^7.2.7"
+  }
+}

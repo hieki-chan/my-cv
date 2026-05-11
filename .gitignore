@@ -1,0 +1,6 @@
+.next/
+dist/
+node_modules/
+out/
+.chrome-test/
+vite-dev.*

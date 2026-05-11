@@ -1,62 +1,18 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>RESUME ARCHIVE</title>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
-  <link
-    href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=DM+Sans:wght@300;400;500&display=swap"
-    rel="stylesheet" />
-  <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
-  <link rel="stylesheet" href="styles.css">
-  <link rel="stylesheet" href="viewerstyles.css">
-
-  <style></style>
-</head>
-
-<body>
-
-  <div class="layout">
-    <aside class="sidebar" id="sidebar">
-      <div class="sidebar-header">
-          <div class="header-content">
-              <h1>RESUME</h1>
-              <h1>ARCHIVE</h1>
-              <div class="label">Kieu Minh Hieu</div>
-          </div>
-      </div>
-
-      <div class="cv-list" id="cv-list">
-        <div class="loading-state">Checking files...</div>
-      </div>
-
-      <div class="sidebar-footer" id="footer"></div>
-    </aside>
-
-    <div class="viewer">
-      <div class="viewer-bar">
-        <button class="toggle-btn" id="toggle-btn">☰</button>
-        <span class="viewer-bar-title" id="bar-title"></span>
-        <span class="viewer-bar-tag" id="bar-tag"></span>
-        <a class="open-btn" id="open-btn" target="_blank" style="display:none">OPEN</a>
-      </div>
-
-      <div class="empty-viewer" id="empty-viewer">
-        SELECT FILE
-      </div>
-
-      <div class="pdf-wrapper">
-        <div class="pdf-bg">
-          <div id="pdf-container"></div>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <script src="script.js"></script>
-
-</body>
-
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>RESUME ARCHIVE</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=DM+Sans:wght@300;400;500&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.jsx"></script>
+  </body>
 </html>
