@@ -149,6 +149,7 @@ a {
   flex: 1;
   min-height: 0;
   overflow-y: auto;
+  overflow-x: hidden;
 }
 
 .cv-item {
@@ -199,7 +200,7 @@ a {
 }
 
 .cv-item:hover {
-  transform: translateX(4px);
+  transform: none;
 }
 
 .cv-item:hover::before,
@@ -416,7 +417,13 @@ a {
   .sidebar {
     flex: 0 0 auto;
     width: 100%;
-    min-height: 42dvh;
+    min-height: 0;
+    height: auto;
+  }
+
+  .sidebar::before,
+  .sidebar::after {
+    display: none;
   }
 
   .sidebar.collapsed {
@@ -426,19 +433,32 @@ a {
   }
 
   .sidebar-header {
-    margin-bottom: 20px;
+    display: none;
   }
 
   .sidebar-resizer {
     display: none;
   }
 
+  .cv-list {
+    flex: 0 0 auto;
+    min-height: 0;
+    overflow: visible;
+    padding: 8px 0;
+  }
+
   .cv-item {
-    height: 58px;
+    height: 44px;
+    margin: 4px 0 8px;
+    padding: 0 14px;
   }
 
   .cv-name {
-    font-size: clamp(38px, 12vw, 56px);
+    font-size: clamp(22px, 6vw, 30px);
+  }
+
+  .sidebar-footer {
+    display: none;
   }
 
   .viewer {

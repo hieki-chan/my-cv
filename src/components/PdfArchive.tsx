@@ -21,6 +21,10 @@ function publicAsset(path: string) {
   return `${import.meta.env.BASE_URL}${path}`;
 }
 
+function pdfWorkerUrl(version: string) {
+  return `https://cdn.jsdelivr.net/npm/pdfjs-dist@${version}/build/pdf.worker.min.mjs`;
+}
+
 function clamp(value: number, min: number, max: number) {
   return Math.min(Math.max(value, min), max);
 }
@@ -177,7 +181,7 @@ export default function PdfArchive({ resumes }: PdfArchiveProps) {
 
       try {
         const pdfjsLib = await import("pdfjs-dist");
-        pdfjsLib.GlobalWorkerOptions.workerSrc = publicAsset("pdf.worker.min.mjs");
+        pdfjsLib.GlobalWorkerOptions.workerSrc = pdfWorkerUrl(pdfjsLib.version);
 
         loadingTask = pdfjsLib.getDocument(activeResume.file);
         loadedPdf = await loadingTask.promise;
