@@ -1,0 +1,269 @@
+@media (max-width: 767px) {
+  body {
+    overflow: auto;
+  }
+
+  .layout {
+    min-height: 100dvh;
+    height: auto;
+    flex-direction: column;
+  }
+
+  .sidebar {
+    flex: 0 0 auto;
+    width: 100%;
+    min-height: 0;
+    height: auto;
+  }
+
+  .sidebar::before,
+  .sidebar::after,
+  .sidebar-reveal {
+    display: none;
+  }
+
+  .sidebar.collapsed {
+    width: 100%;
+    min-height: 0;
+    height: 0;
+  }
+
+  .sidebar-header {
+    display: none;
+  }
+
+  .cv-list {
+    flex: 0 0 auto;
+    min-height: 0;
+    overflow: visible;
+    padding: 28px 0 8px;
+  }
+
+  .cv-item {
+    height: 44px;
+    margin: 4px 0 8px;
+    padding: 0 14px;
+    animation-delay: calc(120ms + var(--item-index, 0) * 70ms);
+  }
+
+  .cv-name {
+    font-size: clamp(22px, 6vw, 30px);
+  }
+
+  .sidebar-footer {
+    display: none;
+  }
+
+  .viewer {
+    min-height: 58dvh;
+  }
+
+  .viewer-bar {
+    position: sticky;
+    top: 0;
+    z-index: 20;
+  }
+
+  .anime-nav {
+    top: 12px;
+    right: 0;
+    max-width: calc(100% - 12px);
+  }
+
+  .anime-nav-lines {
+    overflow-x: auto;
+  }
+
+  .anime-nav-list {
+    padding-right: 12px;
+  }
+
+  .anime-nav-item {
+    font-size: 18px;
+  }
+
+  .anime-nav-item + .anime-nav-item {
+    margin-left: 10px;
+  }
+
+  .portfolio-page {
+    height: auto;
+    min-height: 100dvh;
+  }
+
+  .portfolio-intro::before {
+    inset: 18%;
+  }
+
+  .portfolio-intro-mark {
+    max-width: calc(100% - 28px);
+    flex-wrap: wrap;
+    justify-content: center;
+    text-align: center;
+  }
+
+  .portfolio-intro-sub {
+    bottom: 24%;
+    width: calc(100% - 28px);
+    text-align: center;
+  }
+
+  .portfolio-topbar {
+    left: 14px;
+    max-width: calc(100% - 28px);
+    transform: none;
+    overflow-x: auto;
+  }
+
+  .portfolio-topbar a {
+    flex: 0 0 auto;
+  }
+
+  .portfolio-hero {
+    min-height: 92dvh;
+    place-items: end start;
+    padding: 96px 14px 48px;
+  }
+
+  .portfolio-hero-slices {
+    grid-template-columns: repeat(4, 1fr);
+    opacity: 0.72;
+  }
+
+  .portfolio-hero-sigil {
+    right: -18vw;
+    bottom: 18vh;
+    width: 72vw;
+    opacity: 0.42;
+  }
+
+  .portfolio-hero-count {
+    top: 86px;
+    right: 14px;
+    grid-template-columns: auto;
+    max-width: 122px;
+    text-align: right;
+  }
+
+  .portfolio-hero p {
+    margin-left: 0;
+  }
+
+  .portfolio-band,
+  .portfolio-markdown-section,
+  .portfolio-split,
+  .portfolio-projects-shell {
+    min-height: auto;
+    padding: 76px 14px;
+  }
+
+  .portfolio-card-grid,
+  .portfolio-split,
+  .portfolio-timeline,
+  .portfolio-projects-shell,
+  .portfolio-project {
+    grid-template-columns: 1fr;
+  }
+
+  .portfolio-project-toc {
+    position: sticky;
+    top: 64px;
+    z-index: 24;
+    display: flex;
+    gap: 8px;
+    margin: 0 -14px 22px;
+    border-top: 1px solid rgba(255, 255, 255, 0.16);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.14);
+    background: rgba(5, 7, 10, 0.86);
+    overflow-x: auto;
+    padding: 10px 14px 12px;
+    scroll-padding-inline: 14px;
+    scroll-snap-type: x proximity;
+    backdrop-filter: blur(14px);
+  }
+
+  .portfolio-project-toc::after {
+    display: none;
+  }
+
+  .portfolio-project-toc span {
+    flex: 0 0 auto;
+    margin: 0 8px 0 0;
+    align-self: center;
+  }
+
+  .portfolio-project-toc a {
+    flex: 0 0 auto;
+    grid-template-columns: 28px minmax(0, 1fr);
+    width: min(72vw, 260px);
+    min-width: 0;
+    margin: 0;
+    scroll-snap-align: start;
+  }
+
+  .portfolio-project-toc a::before {
+    display: none;
+  }
+
+  .portfolio-project-toc a:hover,
+  .portfolio-project-toc a.active {
+    transform: translateY(-1px);
+  }
+
+  .portfolio-project-feed {
+    gap: 74px;
+  }
+
+  .portfolio-project {
+    min-height: auto;
+  }
+
+  .portfolio-project-cover {
+    position: relative;
+    top: auto;
+    min-height: 360px;
+  }
+
+  .portfolio-project-card,
+  .portfolio-timeline-item {
+    min-height: 220px;
+  }
+
+  .portfolio-project-card h3,
+  .portfolio-timeline-item h3 {
+    margin-top: 70px;
+  }
+
+  .portfolio-poster {
+    position: relative;
+    top: auto;
+    height: 68dvh;
+    min-height: 420px;
+  }
+
+  .portfolio-copy-stack {
+    padding-top: 0;
+  }
+
+  .markdown-body {
+    width: min(100% - 28px, 880px);
+    padding: 34px 0 56px;
+    font-size: 15px;
+  }
+
+  .markdown-body h1 {
+    font-size: clamp(34px, 12vw, 54px);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 1ms !important;
+    animation-iteration-count: 1 !important;
+    scroll-behavior: auto !important;
+    transition-duration: 1ms !important;
+  }
+}
+

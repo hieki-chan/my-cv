@@ -1,20 +1,18 @@
-import type { CSSProperties, PointerEvent as ReactPointerEvent } from "react";
-import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import type { CSSProperties } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import type { PDFDocumentLoadingTask, PDFDocumentProxy, RenderTask } from "pdfjs-dist";
 import type { AnnotationLayerParameters } from "pdfjs-dist/types/src/display/annotation_layer";
 import type { Resume } from "../data/resumes";
-
-const MIN_SIDEBAR_WIDTH = 260;
-const MAX_SIDEBAR_WIDTH = 560;
-const DEFAULT_SIDEBAR_WIDTH = 360;
+import SidebarImageReveal from "./SidebarImageReveal";
 
 type PdfArchiveProps = {
+  onNavigateToPortfolio?: () => void;
+  portfolioHref?: string;
   resumes: Resume[];
 };
 
 type SidebarStyle = CSSProperties & {
   "--sidebar-bg": string;
-  "--sidebar-w": string;
 };
 
 function publicAsset(path: string) {
@@ -23,10 +21,6 @@ function publicAsset(path: string) {
 
 function pdfWorkerUrl(version: string) {
   return `https://cdn.jsdelivr.net/npm/pdfjs-dist@${version}/build/pdf.worker.min.mjs`;
-}
-
-function clamp(value: number, min: number, max: number) {
-  return Math.min(Math.max(value, min), max);
 }
 
 function useDebouncedValue(value: number, delay: number) {
@@ -62,11 +56,9 @@ function isRenderingCancelled(error: unknown) {
   return error instanceof Error && error.name === "RenderingCancelledException";
 }
 
-export default function PdfArchive({ resumes }: PdfArchiveProps) {
+export default function PdfArchive({ onNavigateToPortfolio, portfolioHref = "/portfolio", resumes }: PdfArchiveProps) {
   const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
-  const [isResizingSidebar, setIsResizingSidebar] = useState(false);
-  const [sidebarWidth, setSidebarWidth] = useState(DEFAULT_SIDEBAR_WIDTH);
-  const [activeIndex, setActiveIndex] = useState(0);
+  const [activeIndex, setActiveIndex] = useState(() => Math.max(resumes.length - 1, 0));
   const [pdfDocument, setPdfDocument] = useState<PDFDocumentProxy | null>(null);
   const [renderError, setRenderError] = useState("");
   const [isLoadingPdf, setIsLoadingPdf] = useState(false);
@@ -74,7 +66,6 @@ export default function PdfArchive({ resumes }: PdfArchiveProps) {
   const [viewerWidth, setViewerWidth] = useState(0);
   const containerRef = useRef<HTMLDivElement | null>(null);
   const wrapperRef = useRef<HTMLDivElement | null>(null);
-  const resizeStartRef = useRef({ pointerX: 0, width: DEFAULT_SIDEBAR_WIDTH });
 
   const activeResume = resumes[activeIndex] ?? null;
   const debouncedViewerWidth = useDebouncedValue(viewerWidth, 140);
@@ -94,45 +85,14 @@ export default function PdfArchive({ resumes }: PdfArchiveProps) {
     return "";
   }, [isLoadingPdf, isRenderingPdf, renderError]);
 
-  const startSidebarResize = useCallback((event: ReactPointerEvent<HTMLButtonElement>) => {
-    if (isSidebarCollapsed) {
+  useEffect(() => {
+    if (resumes.length === 0) {
+      setActiveIndex(0);
       return;
     }
 
-    resizeStartRef.current = {
-      pointerX: event.clientX,
-      width: sidebarWidth,
-    };
-    setIsResizingSidebar(true);
-    event.currentTarget.setPointerCapture?.(event.pointerId);
-  }, [isSidebarCollapsed, sidebarWidth]);
-
-  useEffect(() => {
-    if (!isResizingSidebar) {
-      return undefined;
-    }
-
-    const handlePointerMove = (event: PointerEvent) => {
-      const delta = event.clientX - resizeStartRef.current.pointerX;
-      setSidebarWidth(clamp(
-        resizeStartRef.current.width + delta,
-        MIN_SIDEBAR_WIDTH,
-        MAX_SIDEBAR_WIDTH,
-      ));
-    };
-
-    const stopResize = () => setIsResizingSidebar(false);
-
-    document.body.classList.add("is-sidebar-resizing");
-    window.addEventListener("pointermove", handlePointerMove);
-    window.addEventListener("pointerup", stopResize, { once: true });
-
-    return () => {
-      document.body.classList.remove("is-sidebar-resizing");
-      window.removeEventListener("pointermove", handlePointerMove);
-      window.removeEventListener("pointerup", stopResize);
-    };
-  }, [isResizingSidebar]);
+    setActiveIndex((index) => Math.min(index, resumes.length - 1));
+  }, [resumes.length]);
 
   useEffect(() => {
     const wrapper = wrapperRef.current;
@@ -340,8 +300,8 @@ export default function PdfArchive({ resumes }: PdfArchiveProps) {
 
   const sidebarStyle: SidebarStyle = {
     "--sidebar-bg": `url("${publicAsset("bg_left.jpg")}")`,
-    "--sidebar-w": `${sidebarWidth}px`,
   };
+  const sidebarBackground = `url("${publicAsset("bg_left.jpg")}")`;
 
   return (
     <main className="layout">
@@ -349,27 +309,20 @@ export default function PdfArchive({ resumes }: PdfArchiveProps) {
         className={[
           "sidebar",
           isSidebarCollapsed ? "collapsed" : "",
-          isResizingSidebar ? "is-resizing" : "",
         ].filter(Boolean).join(" ")}
         style={sidebarStyle}
       >
-        <div className="sidebar-header">
-          <div className="header-content">
-            <h1>RESUME</h1>
-            <h1>ARCHIVE</h1>
-            <div className="label">Kieu Minh Hieu</div>
-          </div>
-        </div>
-
+        <SidebarImageReveal image={sidebarBackground} />
         <div className="cv-list">
           {resumes.length === 0 ? (
-            <div className="loading-state">No resumes found</div>
+            <div className="loading-state">No CV files found</div>
           ) : (
             resumes.map((cv, index) => (
               <button
                 className={`cv-item${index === activeIndex ? " active" : ""}`}
                 key={cv.file}
                 onClick={() => setActiveIndex(index)}
+                style={{ "--item-index": index } as CSSProperties}
                 type="button"
               >
                 <span className="cv-name">{cv.label}</span>
@@ -378,32 +331,45 @@ export default function PdfArchive({ resumes }: PdfArchiveProps) {
           )}
         </div>
 
-        <div className="sidebar-footer">{resumes.length} resumes</div>
-        <button
-          aria-label="Resize sidebar"
-          className="sidebar-resizer"
-          onPointerDown={startSidebarResize}
-          type="button"
-        />
+        <div className="sidebar-footer">Kieu Minh Hieu</div>
       </aside>
 
       <section className="viewer">
-        <div className="viewer-bar">
-          <button
-            aria-label="Toggle resume list"
-            className="toggle-btn"
-            onClick={() => setIsSidebarCollapsed((value) => !value)}
-            type="button"
-          >
-            <span aria-hidden="true">&#9776;</span>
-          </button>
-          <span className="viewer-bar-title">{activeResume?.label ?? ""}</span>
-          <span className="viewer-bar-tag">{activeResume?.tag ?? ""}</span>
-          {activeResume ? (
-            <a className="open-btn" href={activeResume.file} rel="noreferrer" target="_blank">
-              OPEN
-            </a>
-          ) : null}
+        <div className="anime-nav">
+          <nav className="anime-nav-lines" aria-label="Main navigation">
+            <ul className="anime-nav-list">
+              <li className="anime-nav-item">
+                <p><span>PORTFOLIO</span></p>
+                <a
+                  href={portfolioHref}
+                  onClick={(event) => {
+                    if (!onNavigateToPortfolio) {
+                      return;
+                    }
+
+                    event.preventDefault();
+                    onNavigateToPortfolio();
+                  }}
+                />
+              </li>
+              <li className="anime-nav-item">
+                <p><span>RSS</span></p>
+                <a href="/rss.xml" rel="noreferrer" target="_blank" />
+              </li>
+              {activeResume ? (
+                <li className="anime-nav-item">
+                  <p><span>DOWNLOAD</span></p>
+                  <a download href={activeResume.file} />
+                </li>
+              ) : null}
+              {activeResume ? (
+                <li className="anime-nav-item">
+                  <p><span>OPEN</span></p>
+                  <a href={activeResume.file} rel="noreferrer" target="_blank" />
+                </li>
+              ) : null}
+            </ul>
+          </nav>
         </div>
 
         {!activeResume ? <div className="empty-viewer">SELECT FILE</div> : null}

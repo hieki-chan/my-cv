@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Kieu Minh Hieu - Portfolio</title>
+    <link>https://mycv-hieki.vercel.app/portfolio</link>
+    <description>Personal website and portfolio updates for Unity developer Kieu Minh Hieu.</description>
+    <language>en-us</language>
+    <lastBuildDate>Sun, 17 May 2026 00:00:00 GMT</lastBuildDate>
+    <atom:link href="https://mycv-hieki.vercel.app/rss.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Portfolio Page</title>
+      <link>https://mycv-hieki.vercel.app/portfolio</link>
+      <guid isPermaLink="true">https://mycv-hieki.vercel.app/portfolio</guid>
+      <pubDate>Sun, 17 May 2026 00:00:00 GMT</pubDate>
+      <description>Markdown-rendered portfolio page with selected Unity and frontend work.</description>
+    </item>
+    <item>
+      <title>Kieu Minh Hieu Website</title>
+      <link>https://mycv-hieki.vercel.app/</link>
+      <guid isPermaLink="true">https://mycv-hieki.vercel.app/</guid>
+      <pubDate>Sun, 17 May 2026 00:00:00 GMT</pubDate>
+      <description>Personal website with portfolio, RSS feed, and CV PDF section.</description>
+    </item>
+  </channel>
+</rss>
