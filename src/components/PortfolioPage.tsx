@@ -24,7 +24,6 @@ type Project = ProjectManifestItem & {
 };
 
 const introLetters = "KIEU MINH HIEU".split("");
-const introCuts = Array.from({ length: 7 });
 const heroSlices = Array.from({ length: 8 });
 
 function asset(path: string) {
@@ -47,73 +46,44 @@ function PortfolioIntro() {
   return (
     <motion.div
       aria-hidden="true"
-      animate={{ opacity: 0, pointerEvents: "none" }}
+      animate={{ clipPath: "inset(0 0 100% 0)", pointerEvents: "none" }}
       className="portfolio-intro"
-      initial={{ opacity: 1 }}
-      transition={{ delay: 2.45, duration: 0.42, ease: "easeOut" }}
+      initial={{ clipPath: "inset(0 0 0% 0)" }}
+      transition={{ delay: 1.82, duration: 0.8, ease: [0.76, 0, 0.24, 1] }}
     >
       <motion.div
-        animate={{ x: "-104%" }}
-        className="portfolio-intro-panel intro-panel-left"
-        initial={{ x: 0 }}
-        transition={{ delay: 2.02, duration: 0.82, ease: [0.76, 0, 0.24, 1] }}
-      />
-      <motion.div
-        animate={{ x: "104%" }}
-        className="portfolio-intro-panel intro-panel-right"
-        initial={{ x: 0 }}
-        transition={{ delay: 2.02, duration: 0.82, ease: [0.76, 0, 0.24, 1] }}
-      />
-      <div className="portfolio-intro-cuts">
-        {introCuts.map((_, index) => (
+        animate={{ opacity: 1, y: 0 }}
+        className="portfolio-intro-lockup"
+        initial={{ opacity: 0, y: 18 }}
+        transition={{ delay: 0.18, duration: 0.56, ease: [0.16, 1, 0.3, 1] }}
+      >
+        <div className="portfolio-intro-mark">
+          {introLetters.map((letter, index) => (
+            <motion.span
+              animate={{ opacity: letter === " " ? 0.5 : 1, y: 0 }}
+              initial={{ opacity: 0, y: 18 }}
+              key={`${letter}-${index}`}
+              transition={{ delay: 0.3 + index * 0.028, duration: 0.38, ease: [0.16, 1, 0.3, 1] }}
+            >
+              {letter === " " ? "\u00a0" : letter}
+            </motion.span>
+          ))}
+        </div>
+        <div className="portfolio-intro-line" aria-hidden="true">
           <motion.span
-            animate={{ scaleX: [0, 1, 1, 0], x: ["-12%", "0%", "0%", "18%"] }}
-            initial={{ scaleX: 0, x: "-12%" }}
-            key={index}
-            transition={{
-              delay: 0.16 + index * 0.055,
-              duration: 1.28,
-              ease: [0.76, 0, 0.24, 1],
-            }}
+            animate={{ scaleX: 1 }}
+            initial={{ scaleX: 0 }}
+            transition={{ delay: 0.26, duration: 1.18, ease: [0.76, 0, 0.24, 1] }}
           />
-        ))}
-      </div>
-      <motion.div
-        animate={{ opacity: [0, 1, 0], x: ["-54vw", "54vw", "74vw"] }}
-        className="portfolio-intro-strike"
-        initial={{ opacity: 0, x: "-54vw" }}
-        transition={{ delay: 1.18, duration: 0.88, ease: [0.76, 0, 0.24, 1] }}
-      />
-      <motion.div
-        animate={{ opacity: [0, 1, 1, 0], rotate: 0, scale: [0.82, 1, 1.04, 1.12] }}
-        className="portfolio-intro-ring"
-        initial={{ opacity: 0, rotate: -16, scale: 0.82 }}
-        transition={{ duration: 2.24, ease: [0.16, 1, 0.3, 1] }}
-      />
-      <motion.div
-        animate={{ clipPath: "inset(0 0% 0 0)" }}
-        className="portfolio-intro-mark"
-        initial={{ clipPath: "inset(0 100% 0 0)" }}
-        transition={{ delay: 0.28, duration: 0.72, ease: [0.76, 0, 0.24, 1] }}
-      >
-        {introLetters.map((letter, index) => (
-          <motion.span
-            animate={{ opacity: letter === " " ? 0.5 : 1, y: 0 }}
-            initial={{ opacity: 0, y: 22 }}
-            key={`${letter}-${index}`}
-            transition={{ delay: 0.54 + index * 0.035, duration: 0.42, ease: [0.16, 1, 0.3, 1] }}
-          >
-            {letter === " " ? "\u00a0" : letter}
-          </motion.span>
-        ))}
-      </motion.div>
-      <motion.div
-        animate={{ opacity: [0, 1, 1, 0], y: [12, 0, 0, -8] }}
-        className="portfolio-intro-sub"
-        initial={{ opacity: 0, y: 12 }}
-        transition={{ delay: 0.9, duration: 1.3, ease: [0.16, 1, 0.3, 1] }}
-      >
-        PROJECTS / UNITY DEVELOPER
+        </div>
+        <motion.div
+          animate={{ opacity: 1 }}
+          className="portfolio-intro-sub"
+          initial={{ opacity: 0 }}
+          transition={{ delay: 0.72, duration: 0.42, ease: "easeOut" }}
+        >
+          PORTFOLIO
+        </motion.div>
       </motion.div>
     </motion.div>
   );
@@ -279,7 +249,6 @@ export default function PortfolioPage({ onNavigateToResumes, resumeHref }: Portf
         <motion.div
           className="portfolio-hero-bg"
           style={{
-            backgroundImage: `url("${asset("bg_left.jpg")}")`,
             opacity: heroOpacity,
             scale: heroScale,
             y: heroY,
@@ -304,15 +273,15 @@ export default function PortfolioPage({ onNavigateToResumes, resumeHref }: Portf
           className="portfolio-hero-sigil"
           initial={{ opacity: 0, rotate: -18, scale: 0.84 }}
           transition={{ delay: 2.18, duration: 1.1, ease: [0.16, 1, 0.3, 1] }}
-        />
-        <motion.div
-          animate={{ opacity: 1, x: 0 }}
-          className="portfolio-hero-count"
-          initial={{ opacity: 0, x: 24 }}
-          transition={{ delay: 2.52, duration: 0.72, ease: [0.16, 1, 0.3, 1] }}
         >
-          <b>{projects.length || "--"}</b>
-          <span>Projects loaded from markdown</span>
+          <motion.span
+            animate={{ rotate: 360 }}
+            transition={{ duration: 18, ease: "linear", repeat: Number.POSITIVE_INFINITY }}
+          />
+          <motion.i
+            animate={{ opacity: [0.16, 0.8, 0.16], scaleX: [0.72, 1, 0.72] }}
+            transition={{ duration: 3.4, ease: "easeInOut", repeat: Number.POSITIVE_INFINITY }}
+          />
         </motion.div>
         <motion.div
           animate={{ opacity: 1, y: 0 }}
@@ -320,11 +289,22 @@ export default function PortfolioPage({ onNavigateToResumes, resumeHref }: Portf
           initial={{ opacity: 0, y: 42 }}
           transition={{ delay: 2.12, duration: 0.9, ease: [0.16, 1, 0.3, 1] }}
         >
-          <span className="portfolio-kicker">KIEU MINH HIEU / PROJECTS</span>
-          <h1>Portfolio</h1>
-          <p>
-            Project notes, gameplay systems, UI surfaces, build details, and assets loaded from markdown folders.
-          </p>
+          <div className="portfolio-hero-heading">
+            <span className="portfolio-kicker">KIEU MINH HIEU / PORTFOLIO</span>
+            <h1>Projects</h1>
+          </div>
+          <div className="portfolio-hero-meta">
+            <p>
+              A portfolio of the projects I have built and the work I am proud to share.
+            </p>
+            <div className="portfolio-hero-list" aria-hidden="true">
+              {projects.slice(0, 3).map((project, index) => (
+                <span key={project.slug}>
+                  {String(index + 1).padStart(2, "0")} / {project.title}
+                </span>
+              ))}
+            </div>
+          </div>
         </motion.div>
         <div className="portfolio-scroll-cue">SCROLL</div>
       </section>
@@ -334,6 +314,21 @@ export default function PortfolioPage({ onNavigateToResumes, resumeHref }: Portf
 
         {projects.length ? (
           <>
+            <label className="portfolio-project-select">
+              <span>PROJECT</span>
+              <select
+                aria-label="Jump to project"
+                onChange={(event) => navigateToProject(event.target.value)}
+                value={activeProject}
+              >
+                {projects.map((project, index) => (
+                  <option key={project.slug} value={project.slug}>
+                    {String(index + 1).padStart(2, "0")} / {project.title}
+                  </option>
+                ))}
+              </select>
+            </label>
+
             <aside className="portfolio-project-toc" aria-label="Project table of contents">
               <span>PROJECTS</span>
               {projects.map((project, index) => (
