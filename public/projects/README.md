@@ -4,32 +4,19 @@ Each portfolio project lives in its own folder:
 
 ```txt
 public/projects/
-  index.json
-  project-slug/
+  1-project-slug/
     project.md
-    assets/
-      cover.png
-      screenshot-01.png
-      demo.mp4
 ```
 
-Add projects to `index.json` in the order you want them to appear.
+The site scans folders automatically during dev/build and loads every folder that contains `project.md`. No `index.json` is needed.
 
-```json
-{
-  "slug": "project-slug",
-  "title": "Project Name",
-  "summary": "Short summary shown before the markdown body.",
-  "year": "2026",
-  "stack": ["Unity", "C#", "React"],
-  "cover": "projects/project-slug/assets/cover.png",
-  "markdown": "projects/project-slug/project.md"
-}
+Use a number prefix to control order, for example `1-zombie-on-the-beach`, `2-t-rex-runner`. Folders without a number come after numbered folders and are sorted by name.
+
+The project title is generated from the folder name after removing the number prefix:
+
+```txt
+project-n -> Project N
+1-zombie-on-the-beach -> Zombie On The Beach
 ```
 
-Inside `project.md`, reference local assets relative to that project folder:
-
-```md
-![Screenshot](assets/screenshot-01.png)
-![Gameplay demo](assets/demo.mp4)
-```
+Inside `project.md`, use normal markdown content. The first paragraph becomes the project summary on the portfolio page.

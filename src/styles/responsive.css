@@ -48,8 +48,25 @@
   }
 
   .portfolio-project {
-    grid-template-columns: 1fr;
+    grid-template-columns: 72px minmax(0, 1fr);
     min-height: auto;
+  }
+
+  .portfolio-project:nth-child(even) {
+    grid-template-columns: 72px minmax(0, 1fr);
+  }
+
+  .portfolio-project:nth-child(even) .portfolio-project-content {
+    grid-column: 2;
+    grid-row: auto;
+  }
+
+  .portfolio-project-content,
+  .portfolio-project:nth-child(even) .portfolio-project-content {
+    border-right: 1px solid rgba(255, 255, 255, 0.16);
+    border-left: 0;
+    padding-right: clamp(18px, 3vw, 36px);
+    padding-left: clamp(18px, 3vw, 36px);
   }
 
   .portfolio-project-cover {
@@ -165,10 +182,18 @@
     max-width: calc(100% - 28px);
     transform: none;
     overflow-x: auto;
+    animation-name: portfolioTopbarEnterMobile;
   }
 
   .portfolio-topbar a {
     flex: 0 0 auto;
+  }
+
+  .portfolio-nav {
+    top: 12px;
+    right: 10px;
+    left: auto;
+    max-width: calc(100% - 20px);
   }
 
   .portfolio-hero {
@@ -259,17 +284,61 @@
   }
 
   .portfolio-project-feed {
-    gap: 74px;
+    gap: 44px;
   }
 
   .portfolio-project {
+    grid-template-columns: 1fr;
     min-height: auto;
+    padding-top: 48px;
+  }
+
+  .portfolio-project:nth-child(even) {
+    grid-template-columns: 1fr;
+  }
+
+  .portfolio-project::before {
+    top: 22px;
+    right: 0;
+    bottom: auto;
+    left: 62px;
+    width: auto;
+    height: 1px;
+    background: linear-gradient(90deg, rgba(255, 255, 255, 0.36), transparent);
+  }
+
+  .portfolio-project::after {
+    top: 0;
+    left: 0;
+    width: 52px;
+    height: 36px;
+    font-size: 26px;
+  }
+
+  .portfolio-project-content,
+  .portfolio-project:nth-child(even) .portfolio-project-content {
+    grid-column: 1;
+    padding: 18px;
+  }
+
+  .portfolio-project-header h2 {
+    font-size: clamp(30px, 11vw, 54px);
+  }
+
+  .markdown-media {
+    width: 100%;
+  }
+
+  .markdown-media img {
+    width: auto;
+    max-width: 100%;
   }
 
   .portfolio-project-cover {
     position: relative;
     top: auto;
     min-height: 360px;
+    clip-path: polygon(0 0, calc(100% - 18px) 0, 100% 18px, 100% 100%, 18px 100%, 0 calc(100% - 18px));
   }
 
   .portfolio-project-card,
@@ -301,6 +370,18 @@
 
   .markdown-body h1 {
     font-size: clamp(34px, 12vw, 54px);
+  }
+}
+
+@keyframes portfolioTopbarEnterMobile {
+  from {
+    opacity: 0;
+    transform: translateY(-16px) scaleX(0.88);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0) scaleX(1);
   }
 }
 

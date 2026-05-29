@@ -5,6 +5,5 @@ export const site = {
   title: "Kieu Minh Hieu - Unity Developer",
   description: "Personal website and portfolio for Unity developer Kieu Minh Hieu.",
   portfolioMarkdown: publicAsset("portfolio.md"),
-  projectsManifest: publicAsset("projects/index.json"),
   rssFeed: publicAsset("rss.xml"),
 };

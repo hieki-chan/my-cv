@@ -1,4 +1,5 @@
 import type { ReactNode } from "react";
+import { createElement } from "react";
 import { PrismLight as SyntaxHighlighter } from "react-syntax-highlighter";
 import javascript from "react-syntax-highlighter/dist/esm/languages/prism/javascript";
 import typescript from "react-syntax-highlighter/dist/esm/languages/prism/typescript";
@@ -35,15 +36,17 @@ const codeTheme = {
 } as typeof oneDark;
 
 function resolveMarkdownAsset(path: string, assetBase = "") {
-  if (/^(https?:)?\/\//.test(path) || path.startsWith("/") || path.startsWith("#")) {
-    return path;
+  const cleanPath = path.trim().replace(/^['"]|['"]$/g, "");
+
+  if (/^(https?:)?\/\//.test(cleanPath) || cleanPath.startsWith("/") || cleanPath.startsWith("#")) {
+    return cleanPath;
   }
 
   if (!assetBase) {
-    return path;
+    return cleanPath;
   }
 
-  return `${assetBase}/${path}`.replace(/\/{2,}/g, "/");
+  return `${assetBase}/${cleanPath}`.replace(/\/{2,}/g, "/");
 }
 
 function tokenizeInline(text: string): InlineToken[] {
@@ -116,6 +119,65 @@ function renderInline(text: string, assetBase?: string): ReactNode[] {
   });
 }
 
+function extractAttribute(html: string, name: string) {
+  const match = html.match(new RegExp(`${name}=["']([^"']+)["']`, "i"));
+  return match?.[1] ?? "";
+}
+
+function renderHtmlTable(html: string, assetBase?: string) {
+  const rows = Array.from(html.matchAll(/<tr[^>]*>([\s\S]*?)<\/tr>/gi));
+
+  return (
+    <div className="markdown-html-table">
+      <table>
+        <tbody>
+          {rows.map((row, rowIndex) => {
+            const cells = Array.from(row[1].matchAll(/<td([^>]*)>([\s\S]*?)<\/td>/gi));
+
+            return (
+              <tr key={`row-${rowIndex}`}>
+                {cells.map((cell, cellIndex) => {
+                  const align = extractAttribute(cell[1], "align");
+                  const image = cell[2].match(/<img([^>]*)>/i);
+                  const src = image ? resolveMarkdownAsset(extractAttribute(image[1], "src"), assetBase) : "";
+                  const alt = image ? extractAttribute(image[1], "alt") : "";
+
+                  return (
+                    <td
+                      align={align === "center" || align === "right" || align === "left" ? align : undefined}
+                      key={`cell-${rowIndex}-${cellIndex}`}
+                    >
+                      {src ? <img alt={alt} src={src} /> : renderInline(cell[2].replace(/<[^>]+>/g, " "), assetBase)}
+                    </td>
+                  );
+                })}
+              </tr>
+            );
+          })}
+        </tbody>
+      </table>
+    </div>
+  );
+}
+
+function renderHtmlParagraph(html: string, assetBase?: string) {
+  const align = extractAttribute(html, "align");
+  const inner = html
+    .replace(/^<p[^>]*>/i, "")
+    .replace(/<\/p>$/i, "")
+    .replace(/<i>([\s\S]*?)<\/i>/gi, "*$1*")
+    .replace(/<[^>]+>/g, "");
+
+  return createElement(
+    "p",
+    {
+      className: "markdown-html-paragraph",
+      style: align === "center" || align === "right" || align === "left" ? { textAlign: align } : undefined,
+    },
+    renderInline(inner.trim(), assetBase),
+  );
+}
+
 export default function MarkdownRenderer({ assetBase, markdown }: MarkdownRendererProps) {
   const blocks: ReactNode[] = [];
   const lines = markdown.replace(/\r\n/g, "\n").split("\n");
@@ -127,6 +189,42 @@ export default function MarkdownRenderer({ assetBase, markdown }: MarkdownRender
 
     if (!trimmed) {
       index += 1;
+      continue;
+    }
+
+    if (/^<table[\s>]/i.test(trimmed)) {
+      const htmlLines = [line];
+      index += 1;
+
+      while (index < lines.length && !lines[index].trim().match(/<\/table>$/i)) {
+        htmlLines.push(lines[index]);
+        index += 1;
+      }
+
+      if (index < lines.length) {
+        htmlLines.push(lines[index]);
+        index += 1;
+      }
+
+      blocks.push(<div key={`html-table-${index}`}>{renderHtmlTable(htmlLines.join("\n"), assetBase)}</div>);
+      continue;
+    }
+
+    if (/^<p[\s>]/i.test(trimmed)) {
+      const htmlLines = [line];
+      index += 1;
+
+      while (index < lines.length && !lines[index].trim().match(/<\/p>$/i)) {
+        htmlLines.push(lines[index]);
+        index += 1;
+      }
+
+      if (index < lines.length) {
+        htmlLines.push(lines[index]);
+        index += 1;
+      }
+
+      blocks.push(<div key={`html-p-${index}`}>{renderHtmlParagraph(htmlLines.join("\n"), assetBase)}</div>);
       continue;
     }
 
