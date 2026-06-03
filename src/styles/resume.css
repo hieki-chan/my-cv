@@ -138,14 +138,17 @@
   padding: 0 24px;
   overflow: hidden;
   border: 0;
-  background: rgba(255, 255, 255, 0.94);
-  color: #000000;
+  background: rgba(0, 0, 0, 0.86);
+  color: #ffffff;
   cursor: pointer;
+  isolation: isolate;
   text-align: left;
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.08);
   transition:
     color 180ms ease,
-    transform 240ms ease,
-    background-color 240ms ease;
+    transform 280ms cubic-bezier(0.16, 1, 0.3, 1),
+    background-color 240ms ease,
+    box-shadow 280ms ease;
   animation: menu-enter 680ms cubic-bezier(0.16, 1, 0.3, 1) both;
   animation-delay: calc(760ms + var(--item-index, 0) * 90ms);
 }
@@ -155,10 +158,11 @@
   position: absolute;
   inset: 0 auto 0 0;
   z-index: 1;
-  width: 100%;
-  background: #000000;
-  transform: translateX(-100%);
-  transition: transform 360ms cubic-bezier(0.65, 0.05, 0.36, 1);
+  width: calc(100% + 26px);
+  background:
+    linear-gradient(90deg, #ffffff 0 84%, rgba(255, 255, 255, 0.54));
+  transform: translateX(-108%) skewX(-10deg);
+  transition: transform 430ms cubic-bezier(0.76, 0, 0.24, 1);
 }
 
 .cv-item::after {
@@ -169,25 +173,47 @@
   width: 5px;
   background: var(--line);
   opacity: 0;
-  transition: opacity 180ms ease;
+  transform: scaleY(0.22);
+  transform-origin: center;
+  transition:
+    opacity 180ms ease,
+    transform 320ms cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-.cv-item:hover,
-.cv-item.active {
-  color: #ffffff;
+.cv-item:hover:not(.active) {
+  color: #000000;
 }
 
 .cv-item:hover {
-  transform: none;
+  transform: translateX(6px);
+  box-shadow:
+    inset 0 0 0 1px rgba(255, 255, 255, 0.22),
+    0 10px 26px rgba(0, 0, 0, 0.28);
 }
 
-.cv-item:hover::before,
+.cv-item:hover:not(.active)::before {
+  transform: translateX(0) skewX(0);
+}
+
+.cv-item.active {
+  background: #ffffff;
+  color: #000000;
+  transform: translateX(12px);
+  box-shadow:
+    -10px 0 0 rgba(255, 191, 61, 0.16),
+    0 18px 34px rgba(0, 0, 0, 0.32),
+    inset 0 0 0 1px rgba(255, 191, 61, 0.18);
+}
+
 .cv-item.active::before {
-  transform: translateX(0);
+  transform: translateX(-108%) skewX(-10deg);
 }
 
 .cv-item.active::after {
+  background: var(--line);
+  box-shadow: 0 0 18px rgba(255, 191, 61, 0.48);
   opacity: 1;
+  transform: scaleY(1);
 }
 
 .cv-name {
@@ -200,6 +226,27 @@
   line-height: 1;
   text-overflow: ellipsis;
   white-space: nowrap;
+}
+
+.cv-item.active .cv-name {
+  animation: cvActiveName 420ms cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+@keyframes cvActiveName {
+  from {
+    opacity: 0.64;
+    transform: translateX(-10px);
+  }
+
+  58% {
+    opacity: 1;
+    transform: translateX(3px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
 }
 
 .loading-state {
@@ -245,7 +292,7 @@
 .anime-nav {
   position: absolute;
   top: 38px;
-  right: 0;
+  right: 24px;
   z-index: 30;
   pointer-events: none;
   animation: animeNavDrop 760ms 1040ms cubic-bezier(0.16, 1, 0.3, 1) both;
@@ -501,11 +548,12 @@
 .pdf-bg {
   min-height: 100%;
   overflow: auto;
-  background-color: #050505;
+  background-color: #030405;
   background-image:
-    linear-gradient(rgba(86, 86, 86, 0.34) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(86, 86, 86, 0.34) 1px, transparent 1px);
-  background-size: 14px 14px;
+    radial-gradient(circle at 50% 0, rgba(255, 255, 255, 0.06), transparent 38%),
+    linear-gradient(rgba(255, 255, 255, 0.115) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.105) 1px, transparent 1px);
+  background-size: 100% 100%, 22px 22px, 22px 22px;
 }
 
 .pdf-state {

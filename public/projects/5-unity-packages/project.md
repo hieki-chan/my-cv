@@ -1,21 +1,21 @@
 # Unity Packages
 
-Tổng hợp một số package có thể tái sử dụng
+A collection of reusable Unity packages for pooling, messaging, and fuzzy search workflows.
 
 ## 1. RePool
 
-Object Pooling cho Unity.
+Object pooling for Unity projects.
 
 [GitHub](https://github.com/stupeak/RePool)
 
 ## 2. Simplest PubSub Ever
 
-Pubsub messaging đơn giản cho Unity.
+A lightweight publish-subscribe messaging package for Unity.
 
 [GitHub](https://github.com/stupeak/SimplestPubsubEver)
 
 ## 3. Unity Search Fuzzy
 
-Thuật toán tìm kiếm Fuzzy cho Unity.
+A fuzzy-search utility for Unity editor and tooling workflows.
 
 [GitHub](https://github.com/hieki-chan/unity-search-fuzzy)

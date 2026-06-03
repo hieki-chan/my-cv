@@ -1,13 +1,24 @@
 # Tower Defense
 
-Game thử thành dựa trên tutorial của Brackeys
+Time: Aug, 2021
 
-![Level 1](01.png)
+A tower defense prototype based on the Brackeys tutorial, expanded with multiple level layouts.
 
-![Level 2](02.png)
-
-![Level 3](03.png)
-
-![Level 4](04.png)
-
-![Level 5](05.png)
+<table>
+  <tr>
+    <td align="center">
+      <img src="01.png" alt="Level 1" />
+    </td>
+    <td align="center">
+      <img src="02.png" alt="Level 2" />
+    </td>
+  </tr>
+  <tr>
+    <td align="center">
+      <img src="03.png" alt="Level 3" />
+    </td>
+    <td align="center">
+      <img src="04.png" alt="Level 4" />
+    </td>
+  </tr>
+</table>

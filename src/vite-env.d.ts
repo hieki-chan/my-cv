@@ -8,3 +8,13 @@ declare module "virtual:projects-manifest" {
 
   export default projects;
 }
+
+declare module "virtual:resumes-manifest" {
+  const resumes: Array<{
+    file: string;
+    label: string;
+    tag: string;
+  }>;
+
+  export default resumes;
+}

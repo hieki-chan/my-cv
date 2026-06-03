@@ -1,11 +1,13 @@
 # T-Rex Runner
 
-Time: May 2, 2021
+Time: May, 2021
 
-MỘT SỐ HÌNH ẢNH VỀ TÒ CHƠI
+A remake of the classic T-Rex runner game, focused on a simple obstacle loop and quick restart flow.
+
+Screenshots
 
 ![Banner](01.png)
 
 ![Gameplay](02.png)
 
-Xem tại: [T-Rex Runner](https://tuyenthanhvien1.blogspot.com/2021/05/blog-post.html)
+View project: [T-Rex Runner](https://tuyenthanhvien1.blogspot.com/2021/05/blog-post.html)

@@ -5,20 +5,76 @@
     <link>https://mycv-hieki.vercel.app/portfolio</link>
     <description>Personal website and portfolio updates for Unity developer Kieu Minh Hieu.</description>
     <language>en-us</language>
-    <lastBuildDate>Sun, 17 May 2026 00:00:00 GMT</lastBuildDate>
+    <lastBuildDate>Wed, 03 Jun 2026 00:00:00 GMT</lastBuildDate>
     <atom:link href="https://mycv-hieki.vercel.app/rss.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Food Rush</title>
+      <link>https://mycv-hieki.vercel.app/portfolio#8-food-rush</link>
+      <guid isPermaLink="true">https://mycv-hieki.vercel.app/portfolio#8-food-rush</guid>
+      <pubDate>Wed, 03 Jun 2026 00:00:00 GMT</pubDate>
+      <description>An Android food-service game built in Unity and published on Google Play.</description>
+    </item>
+    <item>
+      <title>Supermarket Simulator Prototype</title>
+      <link>https://mycv-hieki.vercel.app/portfolio#7-supermarket-simulator-prototype</link>
+      <guid isPermaLink="true">https://mycv-hieki.vercel.app/portfolio#7-supermarket-simulator-prototype</guid>
+      <pubDate>Wed, 03 Jun 2026 00:00:00 GMT</pubDate>
+      <description>A Unity prototype exploring supermarket management interactions, item handling, and store simulation systems.</description>
+    </item>
+    <item>
+      <title>Mario Kart Demo</title>
+      <link>https://mycv-hieki.vercel.app/portfolio#6-mario-kart-demo</link>
+      <guid isPermaLink="true">https://mycv-hieki.vercel.app/portfolio#6-mario-kart-demo</guid>
+      <pubDate>Wed, 03 Jun 2026 00:00:00 GMT</pubDate>
+      <description>A Unity remake prototype of Mario Kart-style movement, pickups, and moment-to-moment kart interactions.</description>
+    </item>
+    <item>
+      <title>Unity Packages</title>
+      <link>https://mycv-hieki.vercel.app/portfolio#5-unity-packages</link>
+      <guid isPermaLink="true">https://mycv-hieki.vercel.app/portfolio#5-unity-packages</guid>
+      <pubDate>Wed, 03 Jun 2026 00:00:00 GMT</pubDate>
+      <description>A collection of reusable Unity packages for pooling, messaging, and fuzzy search workflows.</description>
+    </item>
+    <item>
+      <title>Project N</title>
+      <link>https://mycv-hieki.vercel.app/portfolio#4-project-n</link>
+      <guid isPermaLink="true">https://mycv-hieki.vercel.app/portfolio#4-project-n</guid>
+      <pubDate>Wed, 03 Jun 2026 00:00:00 GMT</pubDate>
+      <description>An RTS prototype inspired by StarCraft II, focused on unit control, tactical combat, and resource-driven progression.</description>
+    </item>
+    <item>
+      <title>Tower Defense</title>
+      <link>https://mycv-hieki.vercel.app/portfolio#3-tower-defense</link>
+      <guid isPermaLink="true">https://mycv-hieki.vercel.app/portfolio#3-tower-defense</guid>
+      <pubDate>Wed, 03 Jun 2026 00:00:00 GMT</pubDate>
+      <description>A tower defense prototype based on the Brackeys tutorial, expanded with multiple level layouts.</description>
+    </item>
+    <item>
+      <title>T-Rex Runner</title>
+      <link>https://mycv-hieki.vercel.app/portfolio#2-t-rex-runner</link>
+      <guid isPermaLink="true">https://mycv-hieki.vercel.app/portfolio#2-t-rex-runner</guid>
+      <pubDate>Wed, 03 Jun 2026 00:00:00 GMT</pubDate>
+      <description>A remake of the classic T-Rex runner game, focused on a simple obstacle loop and quick restart flow.</description>
+    </item>
+    <item>
+      <title>Zombie On The Beach</title>
+      <link>https://mycv-hieki.vercel.app/portfolio#1-zombie-on-the-beach</link>
+      <guid isPermaLink="true">https://mycv-hieki.vercel.app/portfolio#1-zombie-on-the-beach</guid>
+      <pubDate>Wed, 03 Jun 2026 00:00:00 GMT</pubDate>
+      <description>Zombie On The Beach is a small action game about surviving a strange beach fight while chasing a simple arcade score loop.</description>
+    </item>
     <item>
       <title>Portfolio Page</title>
       <link>https://mycv-hieki.vercel.app/portfolio</link>
       <guid isPermaLink="true">https://mycv-hieki.vercel.app/portfolio</guid>
-      <pubDate>Sun, 17 May 2026 00:00:00 GMT</pubDate>
+      <pubDate>Wed, 03 Jun 2026 00:00:00 GMT</pubDate>
       <description>Markdown-rendered portfolio page with selected Unity and frontend work.</description>
     </item>
     <item>
       <title>Kieu Minh Hieu Website</title>
       <link>https://mycv-hieki.vercel.app/</link>
       <guid isPermaLink="true">https://mycv-hieki.vercel.app/</guid>
-      <pubDate>Sun, 17 May 2026 00:00:00 GMT</pubDate>
+      <pubDate>Wed, 03 Jun 2026 00:00:00 GMT</pubDate>
       <description>Personal website with portfolio, RSS feed, and CV PDF section.</description>
     </item>
   </channel>

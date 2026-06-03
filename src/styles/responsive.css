@@ -5,18 +5,17 @@
 
   .portfolio-project-select {
     position: sticky;
-    top: 72px;
-    z-index: 26;
+    top: 76px;
+    z-index: 120;
     display: grid;
-    grid-column: 1;
     grid-template-columns: auto minmax(0, 1fr);
     gap: 10px;
     align-items: center;
-    margin-bottom: 24px;
+    margin: 84px max(24px, 5.5vw) 0;
     border-top: 1px solid rgba(255, 255, 255, 0.16);
     border-bottom: 1px solid rgba(255, 255, 255, 0.14);
     background: rgba(5, 7, 10, 0.9);
-    padding: 10px 0;
+    padding: 10px 12px;
     backdrop-filter: blur(14px);
   }
 
@@ -118,10 +117,16 @@
   }
 
   .cv-item {
+    width: calc(100% - 6px);
     height: 44px;
     margin: 4px 0 8px;
     padding: 0 14px;
     animation-delay: calc(120ms + var(--item-index, 0) * 70ms);
+  }
+
+  .cv-item.active,
+  .cv-item:hover {
+    transform: translateX(6px);
   }
 
   .cv-name {
@@ -144,8 +149,8 @@
 
   .anime-nav {
     top: 12px;
-    right: 0;
-    max-width: calc(100% - 12px);
+    right: 14px;
+    max-width: calc(100% - 28px);
   }
 
   .anime-nav-lines {
@@ -191,9 +196,9 @@
 
   .portfolio-nav {
     top: 12px;
-    right: 10px;
+    right: 14px;
     left: auto;
-    max-width: calc(100% - 20px);
+    max-width: calc(100% - 28px);
   }
 
   .portfolio-hero {
@@ -246,16 +251,16 @@
 
   .portfolio-project-select {
     position: sticky;
-    top: 62px;
-    z-index: 26;
+    top: 56px;
+    z-index: 120;
     display: grid;
     grid-template-columns: auto minmax(0, 1fr);
     gap: 10px;
     align-items: center;
-    margin: 0 -14px 24px;
+    margin: 58px 14px 0;
     border-top: 1px solid rgba(255, 255, 255, 0.16);
     border-bottom: 1px solid rgba(255, 255, 255, 0.14);
-    background: rgba(5, 7, 10, 0.9);
+    background: rgba(5, 7, 10, 0.92);
     padding: 10px 14px;
     backdrop-filter: blur(14px);
   }
@@ -334,6 +339,20 @@
     max-width: 100%;
   }
 
+  .markdown-media-icon img {
+    width: min(132px, 38vw);
+    border-radius: 22px;
+  }
+
+  .markdown-gallery {
+    gap: 10px;
+    margin-right: -14px;
+  }
+
+  .markdown-gallery img {
+    height: clamp(230px, 68vw, 360px);
+  }
+
   .portfolio-project-cover {
     position: relative;
     top: auto;
@@ -363,7 +382,7 @@
   }
 
   .markdown-body {
-    width: min(100% - 28px, 880px);
+    width: 100%;
     padding: 34px 0 56px;
     font-size: 15px;
   }

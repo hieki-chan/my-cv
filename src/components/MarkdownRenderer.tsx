@@ -147,7 +147,12 @@ function renderHtmlTable(html: string, assetBase?: string) {
                       align={align === "center" || align === "right" || align === "left" ? align : undefined}
                       key={`cell-${rowIndex}-${cellIndex}`}
                     >
-                      {src ? <img alt={alt} src={src} /> : renderInline(cell[2].replace(/<[^>]+>/g, " "), assetBase)}
+                      {src ? (
+                        <figure>
+                          <img alt={alt} src={src} />
+                          {alt ? <figcaption>{alt}</figcaption> : null}
+                        </figure>
+                      ) : renderInline(cell[2].replace(/<[^>]+>/g, " "), assetBase)}
                     </td>
                   );
                 })}
@@ -176,6 +181,20 @@ function renderHtmlParagraph(html: string, assetBase?: string) {
     },
     renderInline(inner.trim(), assetBase),
   );
+}
+
+function matchMarkdownMedia(line: string) {
+  const media = line.trim().match(/^!\[([^\]]*)\]\(([^)]+)\)$/);
+
+  if (!media) {
+    return null;
+  }
+
+  const alt = media[1];
+  const src = media[2];
+  const isVideo = /\.(mp4|webm|mov)$/i.test(src);
+
+  return { alt, isVideo, src };
 }
 
 export default function MarkdownRenderer({ assetBase, markdown }: MarkdownRendererProps) {
@@ -282,15 +301,53 @@ export default function MarkdownRenderer({ assetBase, markdown }: MarkdownRender
       continue;
     }
 
-    const media = trimmed.match(/^!\[([^\]]*)\]\(([^)]+)\)$/);
+    const media = matchMarkdownMedia(trimmed);
     if (media) {
-      const alt = media[1];
-      const src = resolveMarkdownAsset(media[2], assetBase);
-      const isVideo = /\.(mp4|webm|mov)$/i.test(src);
+      const mediaItems = [media];
+      let nextIndex = index + 1;
+
+      while (nextIndex < lines.length) {
+        const nextLine = lines[nextIndex].trim();
+
+        if (!nextLine) {
+          nextIndex += 1;
+          continue;
+        }
+
+        const nextMedia = matchMarkdownMedia(nextLine);
+
+        if (!nextMedia || nextMedia.isVideo) {
+          break;
+        }
+
+        mediaItems.push(nextMedia);
+        nextIndex += 1;
+      }
+
+      if (mediaItems.length > 1 && !mediaItems.some((item) => item.isVideo)) {
+        blocks.push(
+          <div className="markdown-gallery" key={`gallery-${index}`}>
+            {mediaItems.map((item, itemIndex) => (
+              <figure key={`${item.src}-${itemIndex}`}>
+                <img alt={item.alt} src={resolveMarkdownAsset(item.src, assetBase)} />
+              </figure>
+            ))}
+          </div>,
+        );
+        index = nextIndex;
+        continue;
+      }
+
+      const alt = media.alt;
+      const src = resolveMarkdownAsset(media.src, assetBase);
+      const isIcon = /(^|[\s-])icon([\s-]|$)|app icon/i.test(alt) || /(^|\/)icon\./i.test(src);
 
       blocks.push(
-        <figure className="markdown-media" key={`media-${index}`}>
-          {isVideo ? (
+        <figure
+          className={isIcon ? "markdown-media markdown-media-icon" : "markdown-media"}
+          key={`media-${index}`}
+        >
+          {media.isVideo ? (
             <video controls playsInline src={src} />
           ) : (
             <img alt={alt} src={src} />

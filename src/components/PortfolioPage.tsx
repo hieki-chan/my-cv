@@ -49,17 +49,21 @@ function projectSlug(path: string) {
   return normalizeProjectPath(path).split("/").filter(Boolean).at(-1) ?? "project";
 }
 
-function summaryFromMarkdown(markdown: string) {
-  return markdown
-    .split(/\n{2,}/)
-    .map((block) => block.trim())
-    .find((block) => block && !block.startsWith("#") && !block.startsWith("!") && !block.startsWith("```"))
-    ?.replace(/\s+/g, " ")
-    ?? "";
-}
-
 function stripTitleHeading(markdown: string) {
   return markdown.replace(/^#\s+.+\n+/, "");
+}
+
+function isSummaryBlock(block: string) {
+  const trimmed = block.trim();
+
+  return Boolean(trimmed)
+    && !trimmed.startsWith("#")
+    && !trimmed.startsWith("!")
+    && !trimmed.startsWith("```")
+    && !trimmed.startsWith("<")
+    && !/^[-*]\s+/.test(trimmed)
+    && !/^\d+\.\s+/.test(trimmed)
+    && !/^\[[^\]]+\]\([^)]+\)$/.test(trimmed);
 }
 
 function extractProjectContent(markdown: string) {
@@ -77,25 +81,52 @@ function extractProjectContent(markdown: string) {
     return true;
   });
 
+  let summary = "";
+  let didRemoveSummary = false;
+  const contentBlocks = contentLines
+    .join("\n")
+    .trimStart()
+    .split(/\n{2,}/)
+    .filter((block) => {
+      if (!didRemoveSummary && isSummaryBlock(block)) {
+        summary = block.trim().replace(/\s+/g, " ");
+        didRemoveSummary = true;
+        return false;
+      }
+
+      return true;
+    });
+
   return {
-    content: contentLines.join("\n").trimStart(),
+    content: contentBlocks.join("\n\n").replace(/^(?:---\s*\n+)+/, "").trimStart(),
+    summary,
     time,
   };
 }
 
-function ProjectArticle({ index, project }: { index: number; project: Project }) {
+function ProjectArticle({
+  index,
+  isFirst,
+  project,
+}: {
+  index: number;
+  isFirst: boolean;
+  project: Project;
+}) {
   const articleRef = useRef<HTMLElement | null>(null);
+  const visibleState = { clipPath: "inset(0 0 0% 0)", opacity: 1, y: 0 };
 
   return (
     <motion.article
       className="portfolio-project"
       data-index={String(index + 1).padStart(2, "0")}
       id={project.slug}
-      initial={{ clipPath: "inset(0 0 18% 0)", opacity: 0, y: 78 }}
+      animate={isFirst ? visibleState : undefined}
+      initial={isFirst ? visibleState : { clipPath: "inset(0 0 18% 0)", opacity: 0, y: 78 }}
       ref={articleRef}
       transition={{ duration: 0.95, ease: [0.16, 1, 0.3, 1] }}
       viewport={{ amount: 0.18, once: true }}
-      whileInView={{ clipPath: "inset(0 0 0% 0)", opacity: 1, y: 0 }}
+      whileInView={isFirst ? undefined : visibleState}
     >
       <div className="portfolio-project-content">
         <header className="portfolio-project-header">
@@ -146,7 +177,7 @@ export default function PortfolioPage({ onNavigateToResumes, resumeHref }: Portf
             assetBase: projectBase(markdownPath),
             content: projectContent.content,
             slug,
-            summary: summaryFromMarkdown(projectContent.content),
+            summary: projectContent.summary,
             time: projectContent.time,
             title: project.title,
           };
@@ -233,6 +264,23 @@ export default function PortfolioPage({ onNavigateToResumes, resumeHref }: Portf
         </nav>
       </div>
 
+      {projects.length ? (
+        <label className="portfolio-project-select">
+          <span>PROJECT</span>
+          <select
+            aria-label="Jump to project"
+            onChange={(event) => navigateToProject(event.target.value)}
+            value={activeProject}
+          >
+            {projects.map((project, index) => (
+              <option key={project.slug} value={project.slug}>
+                {String(index + 1).padStart(2, "0")} / {project.title}
+              </option>
+            ))}
+          </select>
+        </label>
+      ) : null}
+
       <section className="portfolio-hero">
         <motion.div
           className="portfolio-hero-bg"
@@ -295,21 +343,6 @@ export default function PortfolioPage({ onNavigateToResumes, resumeHref }: Portf
 
         {projects.length ? (
           <>
-            <label className="portfolio-project-select">
-              <span>PROJECT</span>
-              <select
-                aria-label="Jump to project"
-                onChange={(event) => navigateToProject(event.target.value)}
-                value={activeProject}
-              >
-                {projects.map((project, index) => (
-                  <option key={project.slug} value={project.slug}>
-                    {String(index + 1).padStart(2, "0")} / {project.title}
-                  </option>
-                ))}
-              </select>
-            </label>
-
             <aside className="portfolio-project-toc" aria-label="Project table of contents">
               <span>PROJECTS</span>
               {projects.map((project, index) => (
@@ -331,7 +364,12 @@ export default function PortfolioPage({ onNavigateToResumes, resumeHref }: Portf
 
             <div className="portfolio-project-feed">
               {projects.map((project, index) => (
-                <ProjectArticle index={index} key={project.slug} project={project} />
+                <ProjectArticle
+                  index={index}
+                  isFirst={index === 0}
+                  key={project.slug}
+                  project={project}
+                />
               ))}
             </div>
           </>

@@ -86,13 +86,8 @@ export default function PdfArchive({ onNavigateToPortfolio, portfolioHref = "/po
   }, [isLoadingPdf, isRenderingPdf, renderError]);
 
   useEffect(() => {
-    if (resumes.length === 0) {
-      setActiveIndex(0);
-      return;
-    }
-
-    setActiveIndex((index) => Math.min(index, resumes.length - 1));
-  }, [resumes.length]);
+    setActiveIndex(Math.max(resumes.length - 1, 0));
+  }, [resumes]);
 
   useEffect(() => {
     const wrapper = wrapperRef.current;
